@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="760" viewBox="0 0 1400 760" role="img" aria-labelledby="title desc">
+  <title id="title">Gibbs sampling visual explanation</title>
+  <desc id="desc">A roomy visual explanation of how Gibbs sampling assigns the word ball in document 1 to Topic 3 using document-topic and topic-word evidence.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#52677c"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#1f2d3d" flood-opacity="0.12"/>
+    </filter>
+    <style>
+      .box { fill: #fff; stroke: #d7e1eb; stroke-width: 2; filter: url(#shadow); }
+      .title { font: 800 34px -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; fill: #17202a; }
+      .label { font: 800 24px -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; fill: #17202a; }
+      .small { font: 500 18px -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; fill: #52677c; }
+      .word { font: 800 31px -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+      .math { font: 700 25px Georgia, "Times New Roman", serif; }
+      .blue { fill: #2567a9; }
+      .green { fill: #2d7f46; }
+      .red { fill: #a30f35; }
+      .arrow { stroke: #52677c; stroke-width: 4; marker-end: url(#arrow); fill: none; }
+    </style>
+  </defs>
+
+  <rect width="1400" height="760" fill="#f6f8fb"/>
+  <text x="56" y="62" class="title">Gibbs Sampling: resample one word using two kinds of evidence</text>
+  <text x="56" y="96" class="small">Question: for the circled word "ball", which topic should it belong to?</text>
+
+  <g transform="translate(70 150)">
+    <rect class="box" width="275" height="390" rx="10"/>
+    <text x="28" y="46" class="label">Current document</text>
+    <text x="28" y="80" class="small">Doc 1 contains:</text>
+    <text x="98" y="138" class="word red">ball</text>
+    <text x="98" y="185" class="word red">ball</text>
+    <text x="98" y="232" class="word red">ball</text>
+    <text x="98" y="279" class="word blue">planet</text>
+    <text x="98" y="326" class="word blue">galaxy</text>
+    <ellipse cx="124" cy="127" rx="62" ry="28" fill="none" stroke="#7e4bb3" stroke-width="5"/>
+    <text x="28" y="363" class="small">Resample this token.</text>
+  </g>
+
+  <path class="arrow" d="M375 345 H455"/>
+
+  <g transform="translate(480 140)">
+    <rect class="box" width="360" height="420" rx="10"/>
+    <text x="28" y="48" class="label">Evidence 1</text>
+    <text x="28" y="80" class="small">How much is each topic in Doc 1?</text>
+    <text x="48" y="138" class="math blue">Topic 1: 2 + alpha</text>
+    <text x="48" y="190" class="math green">Topic 2: 0 + alpha</text>
+    <text x="48" y="242" class="math red">Topic 3: 2 + alpha</text>
+    <rect x="28" y="292" width="300" height="82" rx="8" fill="#eef9f9" stroke="#bfe4e6" stroke-width="2"/>
+    <text x="48" y="326" class="small">This captures document context:</text>
+    <text x="48" y="354" class="small">what topics this document likes.</text>
+  </g>
+
+  <path class="arrow" d="M865 345 H945"/>
+
+  <g transform="translate(970 140)">
+    <rect class="box" width="360" height="420" rx="10"/>
+    <text x="28" y="48" class="label">Evidence 2</text>
+    <text x="28" y="80" class="small">How often is "ball" in each topic?</text>
+    <text x="48" y="138" class="math blue">ball in Topic 1: 0 + beta</text>
+    <text x="48" y="190" class="math green">ball in Topic 2: 1 + beta</text>
+    <text x="48" y="242" class="math red">ball in Topic 3: 3 + beta</text>
+    <rect x="28" y="292" width="300" height="82" rx="8" fill="#fff6e9" stroke="#efd4a6" stroke-width="2"/>
+    <text x="48" y="326" class="small">This captures word evidence:</text>
+    <text x="48" y="354" class="small">which topic usually uses "ball".</text>
+  </g>
+
+  <g transform="translate(170 600)">
+    <rect width="1060" height="92" rx="10" fill="#ffffff" stroke="#d7e1eb" stroke-width="2" filter="url(#shadow)"/>
+    <text x="34" y="38" class="label">Combine the two counts</text>
+    <text x="34" y="70" class="small">Topic 3 gets the largest weight: (2 + alpha)(3 + beta). So the circled "ball" is most likely sampled as Topic 3.</text>
+  </g>
+</svg>

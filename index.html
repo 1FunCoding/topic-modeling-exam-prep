@@ -1,0 +1,1449 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Topic Modeling Exam Prep</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --paper: #ffffff;
+      --ink: #17202a;
+      --muted: #5f6b7a;
+      --line: #dde4ec;
+      --red: #a30f35;
+      --teal: #0b7f86;
+      --blue: #2567a9;
+      --green: #2d7f46;
+      --amber: #a86508;
+      --shadow: 0 16px 40px rgba(31, 45, 61, 0.08);
+      --radius: 8px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, "Noto Sans SC", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      background: #ffffff;
+      border-right: 1px solid var(--line);
+      overflow-y: auto;
+    }
+
+    .brand {
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand .course {
+      color: var(--red);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand h1 {
+      margin: 7px 0 8px;
+      font-size: 26px;
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .brand p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    nav {
+      display: grid;
+      gap: 4px;
+    }
+
+    nav a {
+      display: block;
+      padding: 9px 10px;
+      border-radius: 6px;
+      color: #354050;
+      font-size: 14px;
+      border: 1px solid transparent;
+    }
+
+    nav a:hover {
+      background: #f3f6f9;
+      border-color: var(--line);
+    }
+
+    .main {
+      padding: 32px clamp(20px, 4vw, 56px) 64px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .source {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .print-btn {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--ink);
+      border-radius: 6px;
+      padding: 9px 12px;
+      font: inherit;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(31, 45, 61, 0.05);
+    }
+
+    .print-btn:hover {
+      border-color: #b9c5d3;
+    }
+
+    section {
+      scroll-margin-top: 24px;
+      margin-bottom: 28px;
+    }
+
+    .exam-board {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .panel,
+    .card,
+    details {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .panel {
+      padding: clamp(20px, 3vw, 30px);
+    }
+
+    .panel h2,
+    section > h2 {
+      margin: 0 0 14px;
+      font-size: clamp(23px, 2.4vw, 34px);
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .panel p {
+      margin: 0 0 14px;
+      color: #2c3541;
+    }
+
+    .lead {
+      font-size: 19px;
+      max-width: 760px;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 750;
+      background: #edf3f8;
+      color: #223246;
+      border: 1px solid #d7e1eb;
+    }
+
+    .badge.red {
+      background: #f8e9ed;
+      color: var(--red);
+      border-color: #efc9d3;
+    }
+
+    .badge.teal {
+      background: #e4f5f6;
+      color: var(--teal);
+      border-color: #bde4e7;
+    }
+
+    .badge.amber {
+      background: #fbf0df;
+      color: var(--amber);
+      border-color: #efd4a6;
+    }
+
+    .quick-card {
+      padding: 20px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .quick-card h3,
+    .card h3 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.25;
+    }
+
+    .quick-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .quick-list li {
+      display: grid;
+      grid-template-columns: 26px 1fr;
+      gap: 10px;
+      align-items: start;
+      color: #2d3744;
+    }
+
+    .num {
+      display: inline-grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #e9f1fb;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .card {
+      padding: 18px;
+      min-width: 0;
+    }
+
+    .card p,
+    .card ul,
+    details p,
+    details ul {
+      margin-top: 10px;
+      margin-bottom: 0;
+      color: #334051;
+    }
+
+    .label {
+      display: inline-block;
+      margin-bottom: 6px;
+      padding: 3px 7px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .cn-label {
+      color: var(--red);
+      background: #f8e9ed;
+    }
+
+    .en-label {
+      color: var(--teal);
+      background: #e4f5f6;
+    }
+
+    .en {
+      color: #25384b;
+      font-weight: 650;
+    }
+
+    ul,
+    ol {
+      padding-left: 20px;
+    }
+
+    li + li {
+      margin-top: 6px;
+    }
+
+    .formula {
+      display: grid;
+      gap: 12px;
+    }
+
+    .math-card {
+      display: grid;
+      gap: 14px;
+      padding: 18px;
+      border: 1px solid #cbd9e7;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #fbfdff 0%, #f4f8fc 100%);
+    }
+
+    .math-title {
+      margin: 0;
+      color: #233247;
+      font-size: 14px;
+      font-weight: 850;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .math-expression {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      color: #101827;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(20px, 2.2vw, 30px);
+      line-height: 1.25;
+    }
+
+    .math-expression.compact {
+      font-size: clamp(18px, 1.8vw, 24px);
+    }
+
+    .math-token {
+      display: inline-flex;
+      align-items: baseline;
+      white-space: nowrap;
+    }
+
+    .math-sub {
+      font-size: 0.6em;
+      vertical-align: sub;
+      margin-left: 1px;
+    }
+
+    .math-sup {
+      font-size: 0.58em;
+      vertical-align: super;
+      margin-left: 1px;
+    }
+
+    .frac {
+      display: inline-grid;
+      grid-template-rows: auto auto;
+      align-items: center;
+      text-align: center;
+      min-width: 84px;
+      margin: 0 3px;
+    }
+
+    .frac .top {
+      padding: 0 5px 4px;
+      border-bottom: 1.5px solid currentColor;
+    }
+
+    .frac .bottom {
+      padding: 4px 5px 0;
+    }
+
+    .math-note {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .symbol-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .symbol {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #ffffff;
+    }
+
+    .symbol code {
+      display: inline-block;
+      margin-bottom: 4px;
+      color: var(--red);
+      font-weight: 850;
+    }
+
+    .equation {
+      overflow-x: auto;
+      padding: 14px 16px;
+      border-radius: 7px;
+      background: #111827;
+      color: #f7fafc;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 15px;
+      white-space: nowrap;
+    }
+
+    .weights {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .weight {
+      border-radius: 7px;
+      border: 1px solid var(--line);
+      padding: 13px;
+      background: #fbfcfe;
+    }
+
+    .weight strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+
+    .weight code,
+    code {
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 0.94em;
+    }
+
+    .visual-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .explainer-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .explainer-grid figure img,
+    .wide-figure img {
+      width: 100%;
+      min-height: 360px;
+      object-fit: contain;
+    }
+
+    figure {
+      margin: 0;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #fff;
+    }
+
+    figcaption {
+      padding: 12px 14px 14px;
+      border-top: 1px solid var(--line);
+      color: #334051;
+      font-size: 14px;
+    }
+
+    figcaption strong {
+      color: var(--ink);
+    }
+
+    .answer-flow {
+      display: grid;
+      gap: 10px;
+      counter-reset: step;
+    }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .checklist li {
+      position: relative;
+      padding: 12px 14px 12px 42px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--paper);
+    }
+
+    .checklist li::before {
+      content: "✓";
+      position: absolute;
+      left: 14px;
+      top: 12px;
+      display: grid;
+      place-items: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #e4f5f6;
+      color: var(--teal);
+      font-weight: 850;
+      font-size: 12px;
+    }
+
+    .mini-table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .mini-table th,
+    .mini-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .mini-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .mini-table th {
+      color: var(--red);
+      background: #fbf3f5;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .step {
+      position: relative;
+      padding: 14px 16px 14px 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 7px;
+    }
+
+    .step::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      display: grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #f8e9ed;
+      color: var(--red);
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    .step strong {
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    details {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 16px 18px;
+      font-weight: 800;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::after {
+      content: "+";
+      color: var(--teal);
+      font-size: 22px;
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    details[open] summary::after {
+      content: "-";
+    }
+
+    .detail-body {
+      padding: 0 18px 18px;
+      border-top: 1px solid var(--line);
+    }
+
+    .practice {
+      display: grid;
+      gap: 12px;
+    }
+
+    .callout {
+      border-left: 4px solid var(--teal);
+      padding: 14px 16px;
+      background: #eef9f9;
+      border-radius: 0 7px 7px 0;
+      color: #21333a;
+    }
+
+    .warn {
+      border-left-color: var(--amber);
+      background: #fff6e9;
+    }
+
+    .colored-topics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .topic-pill {
+      border-radius: 7px;
+      padding: 12px;
+      color: #fff;
+      font-weight: 800;
+      min-height: 58px;
+      display: grid;
+      align-content: center;
+      gap: 2px;
+    }
+
+    .topic-pill span {
+      font-size: 12px;
+      font-weight: 650;
+      opacity: 0.93;
+    }
+
+    .topic-blue {
+      background: var(--blue);
+    }
+
+    .topic-green {
+      background: var(--green);
+    }
+
+    .topic-red {
+      background: var(--red);
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 34px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 980px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      aside {
+        position: static;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .exam-board,
+      .grid,
+      .two,
+      .visual-grid,
+      .explainer-grid,
+      .weights,
+      .symbol-grid,
+      .process-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .main {
+        padding: 22px 14px 46px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      nav {
+        grid-template-columns: 1fr;
+      }
+
+      .colored-topics {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .layout {
+        display: block;
+      }
+
+      aside,
+      .topbar {
+        display: none;
+      }
+
+      .main {
+        padding: 0;
+      }
+
+      .panel,
+      .card,
+      details,
+      figure {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+
+      details {
+        display: block;
+      }
+
+      details:not([open]) .detail-body {
+        display: block;
+      }
+
+      summary::after {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside>
+      <div class="brand">
+        <div class="course">CSCI 185 Data Mining</div>
+        <h1>Topic Modeling 双语 Exam Prep</h1>
+        <p>中文理解 + English exam phrasing</p>
+      </div>
+      <nav aria-label="Page sections">
+        <a href="#overview">总览 / Overview</a>
+        <a href="#focus">四个重点 / Core Focus</a>
+        <a href="#visual-explainers">解释图 / Diagrams</a>
+        <a href="#theory">理论 / Theory</a>
+        <a href="#gibbs">Gibbs Sampling</a>
+        <a href="#priors">Alpha / Beta</a>
+        <a href="#workflow">流程 / Workflow</a>
+        <a href="#evaluation">评估 / Evaluation</a>
+        <a href="#visuals">图像 / Visuals</a>
+        <a href="#case-studies">案例 / Case Studies</a>
+        <a href="#applications">应用 / Applications</a>
+        <a href="#framework">框架 / Framework</a>
+        <a href="#practice">练习 / Practice</a>
+        <a href="#cheatsheet">速记 / Cheat Sheet</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div class="source">Source: 6_Topic_Modeling.pdf, 47 slides, including images</div>
+        <button class="print-btn" type="button" onclick="window.print()">打印 / 保存 PDF</button>
+      </div>
+
+      <section id="overview" class="exam-board">
+        <div class="panel">
+          <h2>考试要抓住的一句话 / Core Idea</h2>
+          <p class="lead"><span class="label cn-label">中文</span><br>Topic modeling 用无监督方法从大量文本里发现隐藏主题；LDA 把每个 document 看成 topics 的 mixture，把每个 topic 看成 words 的 probability distribution。</p>
+          <p class="lead"><span class="label en-label">English</span><br><span class="en">Topic modeling is an unsupervised NLP technique for discovering latent themes in a corpus. LDA models each document as a mixture of topics and each topic as a probability distribution over words.</span></p>
+          <div class="badges">
+            <span class="badge red">Unsupervised</span>
+            <span class="badge teal">Latent themes</span>
+            <span class="badge amber">Probabilistic</span>
+            <span class="badge">Data scientist interpretation</span>
+          </div>
+        </div>
+
+        <div class="quick-card panel">
+          <h3>最可能考的 4 件事 / Four likely exam targets</h3>
+          <ul class="quick-list">
+            <li><span class="num">1</span><span>解释 topic modeling 和 latent topic。Explain topic modeling and latent topics.</span></li>
+            <li><span class="num">2</span><span>说清楚 LDA 的 document-topic / topic-word 假设。Explain document-topic and topic-word distributions.</span></li>
+            <li><span class="num">3</span><span>用 Gibbs sampling 的两个 count 解释重采样。Use the two counts to explain resampling.</span></li>
+            <li><span class="num">4</span><span>从业务场景写出建模、解释、验证和 limitations。Apply the model from a data scientist perspective.</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="focus">
+        <h2>老师要求的四个重点 / Core Focus</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>1. What Topic Modeling Is</h3>
+            <p><span class="label cn-label">理解</span><br>Topic modeling 不是直接分类，而是在 unlabeled text 里发现隐藏主题。一个 document 可以同时包含多个 topics。</p>
+            <p><span class="label en-label">Exam phrase</span><br><span class="en">Topic modeling is an unsupervised method for discovering latent themes in a collection of documents.</span></p>
+          </article>
+          <article class="card">
+            <h3>2. Gibbs Sampling</h3>
+            <p><span class="label cn-label">理解</span><br>它从 random assignment 开始，然后不断重新给每个 word 选择 topic。选择依据是 document-topic count 和 topic-word count。</p>
+            <p><span class="label en-label">Exam phrase</span><br><span class="en">Gibbs sampling iteratively resamples each word's topic based on how common the topic is in the document and how common the word is in the topic.</span></p>
+          </article>
+          <article class="card">
+            <h3>3. Importance of Priors</h3>
+            <p><span class="label cn-label">理解</span><br>alpha 和 beta 不只是公式里的符号。它们控制模型偏向 broad topics/documents 还是 focused topics/documents，并避免 zero probability。</p>
+            <p><span class="label en-label">Exam phrase</span><br><span class="en">Priors control the shape of topic mixtures and word distributions, while smoothing counts so the model does not become too rigid.</span></p>
+          </article>
+          <article class="card">
+            <h3>4. Case Studies</h3>
+            <p><span class="label cn-label">理解</span><br>应用题要从 data scientist 视角答：目标是什么、文档是什么、怎么建模、怎么解释、如何验证、如何行动。</p>
+            <p><span class="label en-label">Exam phrase</span><br><span class="en">A case study answer should connect the model output back to a real decision or insight.</span></p>
+          </article>
+        </div>
+      </section>
+
+      <section id="visual-explainers">
+        <h2>先看图理解 / Visual Explainers</h2>
+        <div class="explainer-grid">
+          <figure class="wide-figure">
+            <img src="topic_modeling_assets/tm_pipeline.svg" alt="Topic modeling pipeline from raw texts to useful themes">
+            <figcaption><strong>Topic Modeling 总流程:</strong> 原始文本先经过 preprocessing，再进入 LDA，输出 topics 和 document-topic proportions，最后由 data scientist 解释并用于决策。</figcaption>
+          </figure>
+          <figure class="wide-figure">
+            <img src="topic_modeling_assets/gibbs_sampling_visual.svg" alt="Gibbs sampling visual showing two evidence sources for assigning ball to Topic 3">
+            <figcaption><strong>Gibbs Sampling 直觉:</strong> 给某个 word 重新选 topic 时，同时看这个 topic 在当前 document 里多常见，以及这个 word 在该 topic 里多常见。</figcaption>
+          </figure>
+          <figure class="wide-figure">
+            <img src="topic_modeling_assets/priors_visual.svg" alt="Alpha and beta priors visual showing focused and broad distributions">
+            <figcaption><strong>Priors 为什么重要:</strong> alpha 控制 document 里 topic mixture 的宽窄；beta 控制 topic 里 word distribution 的宽窄，并提供 smoothing。</figcaption>
+          </figure>
+          <figure class="wide-figure">
+            <img src="topic_modeling_assets/case_study_visual.svg" alt="Case study visual showing customer reviews transformed into topics and decisions">
+            <figcaption><strong>Case Study 答题思路:</strong> 不要只列 top words，要说明 topic proportions 如何支持真实决策。</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="theory">
+        <h2>LDA 理论 / LDA Theory</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>Topic Modeling</h3>
+            <p><span class="label cn-label">中文</span><br>一种 NLP / ML 学习技术，用来 uncover latent thematic structures within a collection of texts。</p>
+            <p><span class="label en-label">English</span><br><span class="en">Topic modeling discovers hidden themes in a collection of documents by learning patterns of word co-occurrence.</span></p>
+          </article>
+          <article class="card">
+            <h3>LDA</h3>
+            <p><span class="label cn-label">中文</span><br>Latent Dirichlet Allocation。它是 probabilistic generative model，不是像 LSI 那样主要走 linear algebra。</p>
+            <p><span class="label en-label">English</span><br><span class="en">LDA is a probabilistic generative model, unlike LSI, which is based more on linear algebra.</span></p>
+          </article>
+          <article class="card">
+            <h3>核心假设 / Assumption</h3>
+            <p><span class="label cn-label">中文</span><br>每个 document 是少量 topics 的组合；每个 word 来自这个 document 里的某一个 topic。</p>
+            <p><span class="label en-label">English</span><br><span class="en">Each document is a mixture of topics, and each word is generated from one of the document's topics.</span></p>
+          </article>
+        </div>
+        <div class="colored-topics">
+          <div class="topic-pill topic-blue">Science <span>planet, galaxy</span></div>
+          <div class="topic-pill topic-green">Politics <span>referendum</span></div>
+          <div class="topic-pill topic-red">Sports <span>ball</span></div>
+        </div>
+
+        <div class="callout" style="margin-top: 16px;">
+          <strong>Slides 原话 — Two Monochromatic Properties (LDA 的目标):</strong><br>
+          <strong>Property 1:</strong> Articles are as monochromatic as possible — 每篇文档里的 word 颜色（topic）尽量一致。<br>
+          <strong>Property 2:</strong> Words are as monochromatic as possible — 同一个 word 在不同文档里的颜色（topic）也尽量一致。<br>
+          <span style="color: var(--muted);">中文: LDA 调整 topic assignment 的目标，就是同时让"每个文档单色"和"每个词单色"这两条尽可能成立。考试用 slides 的原词 "monochromatic" 更稳。</span>
+        </div>
+
+        <div class="callout warn" style="margin-top: 12px;">
+          <strong>Quechua 例子 (slides 用来说明 unsupervised 的力量):</strong><br>
+          Slides 给了 4 篇只含 <code>khuya / yachay / alliku / pachamama</code> 这种 Quechua 词的文档。即使你完全不懂这门语言，LDA 仍然可以根据 word co-occurrence 把它们聚成 topic。<br>
+          <strong>Exam phrase:</strong> <span class="en">Topic modeling is unsupervised — it works on word co-occurrence patterns, so it does not require the analyst to understand the language or pre-label the documents.</span>
+        </div>
+      </section>
+
+      <section id="gibbs">
+        <h2>Gibbs Sampling / 吉布斯采样</h2>
+        <div class="panel formula">
+          <figure class="wide-figure">
+            <img src="topic_modeling_assets/gibbs_sampling_visual.svg" alt="Gibbs sampling visual explanation">
+            <figcaption><strong>先看这张图:</strong> Gibbs sampling 的核心就是把每个 word 的 topic 重新抽样，权重来自 document-topic evidence 和 topic-word evidence。</figcaption>
+          </figure>
+          <p><span class="label cn-label">中文</span><br>LDA 一开始会 randomly assign 每个 word token 到某个 topic。之后反复检查每个 word，并根据两个证据重新 sample topic。</p>
+          <p><span class="label en-label">English</span><br><span class="en">LDA starts with random topic assignments. Gibbs sampling then repeatedly revisits each word token and resamples its topic using document-topic and topic-word evidence.</span></p>
+
+          <div class="math-card">
+            <p class="math-title">为什么是乘法 / LDA conditional independence (slides 手写板)</p>
+            <div class="math-expression compact">
+              <span>P(z, w | d)</span>
+              <span>=</span>
+              <span>P(z | d)</span>
+              <span>·</span>
+              <span>P(w | z, d)</span>
+              <span>=</span>
+              <span>P(z | d)</span>
+              <span>·</span>
+              <span>P(w | z)</span>
+            </div>
+            <p class="math-note"><strong>LDA assumption:</strong> Once a topic z is known, the document d no longer directly affects the word w — so P(w | z, d) 简化为 P(w | z)。这就是为什么 Gibbs 权重写成两个 count 的<strong>乘积</strong>：一个对应 P(z|d)（topic 在文档里的常见度），一个对应 P(w|z)（word 在 topic 里的常见度）。</p>
+          </div>
+
+          <div class="math-card">
+            <p class="math-title">Slide intuition: two pieces of evidence</p>
+            <div class="math-expression">
+              <span class="math-token">weight<span class="math-sub">k</span></span>
+              <span>∝</span>
+              <span class="math-token">P(topic&nbsp;k&nbsp;|&nbsp;document&nbsp;d)</span>
+              <span>×</span>
+              <span class="math-token">P(word&nbsp;w&nbsp;|&nbsp;topic&nbsp;k)</span>
+            </div>
+            <p class="math-note">中文: 一个 topic 在当前 document 里越常见、这个 word 在该 topic 里越常见，这个 word 就越可能被分到该 topic。English: A topic is more likely if it is common in the current document and the word is common in that topic.</p>
+          </div>
+
+          <div class="math-card">
+            <p class="math-title">Count version used in the slides</p>
+            <div class="math-expression">
+              <span class="math-token">weight<span class="math-sub">k</span></span>
+              <span>∝</span>
+              <span>(n<span class="math-sub">d,k</span> + α)</span>
+              <span>×</span>
+              <span>(n<span class="math-sub">k,w</span> + β)</span>
+            </div>
+            <div class="symbol-grid">
+              <div class="symbol"><code>n<sub>d,k</sub></code><br>topic k 在 document d 中的 count</div>
+              <div class="symbol"><code>n<sub>k,w</sub></code><br>word w 在 topic k 中的 count</div>
+              <div class="symbol"><code>α, β</code><br>Dirichlet priors / smoothing</div>
+            </div>
+          </div>
+
+          <div class="math-card">
+            <p class="math-title">Normalize the weights into a categorical distribution</p>
+            <div class="math-expression compact">
+              <span>P(z<span class="math-sub">i</span> = k)</span>
+              <span>=</span>
+              <span class="frac">
+                <span class="top">weight<span class="math-sub">k</span></span>
+                <span class="bottom">Σ<span class="math-sub">j=1..K</span> weight<span class="math-sub">j</span></span>
+              </span>
+            </div>
+            <p class="math-note"><strong>Slides 原话:</strong> <span class="en">The new topic is sampled from a <strong>categorical distribution</strong> whose probabilities are proportional to the Gibbs weights for each topic.</span> 中文: 先算每个 topic 的 weight，归一化成 categorical distribution，再从中 sample 一个新 topic（不是直接选最大的，所以 blue / green 仍有小概率被选中）。</p>
+          </div>
+
+          <div class="math-card">
+            <p class="math-title">Fuller LDA Gibbs form, if denominator is expected</p>
+            <div class="math-expression compact">
+              <span>P(z<span class="math-sub">i</span> = k | z<span class="math-sub">-i</span>, w)</span>
+              <span>∝</span>
+              <span>(n<span class="math-sub">d,k</span><span class="math-sup">-i</span> + α)</span>
+              <span>×</span>
+              <span class="frac">
+                <span class="top">n<span class="math-sub">k,w</span><span class="math-sup">-i</span> + β</span>
+                <span class="bottom">n<span class="math-sub">k,·</span><span class="math-sup">-i</span> + Vβ</span>
+              </span>
+            </div>
+            <p class="math-note">-i 表示重采样时先排除当前 word token；V 是 vocabulary size。考试如果只按 slides，讲清楚两个 count 的直觉通常就够。</p>
+          </div>
+
+          <div class="weights">
+            <div class="weight">
+              <strong>Topic 1</strong>
+              <code>(2 + alpha)(0 + beta)</code>
+            </div>
+            <div class="weight">
+              <strong>Topic 2</strong>
+              <code>(0 + alpha)(1 + beta)</code>
+            </div>
+            <div class="weight">
+              <strong>Topic 3</strong>
+              <code>(2 + alpha)(3 + beta)</code>
+            </div>
+          </div>
+
+          <div class="math-card">
+            <p class="math-title">几何直觉 / Geometric view (slides page 37)</p>
+            <div style="display: flex; align-items: flex-end; gap: 18px; justify-content: center; padding: 14px 0 6px; flex-wrap: wrap;">
+              <div style="display: grid; justify-items: center; gap: 6px;">
+                <div style="width: 50px; height: 110px; background: #2567a9; border-radius: 4px;" title="Topic 1: (2+α) × β"></div>
+                <span style="font-size: 13px; color: #25384b;"><strong>Topic 1</strong><br>height = 2+α<br>width = β</span>
+              </div>
+              <div style="display: grid; justify-items: center; gap: 6px;">
+                <div style="width: 95px; height: 32px; background: #2d7f46; border-radius: 4px;" title="Topic 2: α × (1+β)"></div>
+                <span style="font-size: 13px; color: #25384b;"><strong>Topic 2</strong><br>height = α<br>width = 1+β</span>
+              </div>
+              <div style="display: grid; justify-items: center; gap: 6px;">
+                <div style="width: 150px; height: 110px; background: #a30f35; border-radius: 4px;" title="Topic 3: (2+α) × (3+β)"></div>
+                <span style="font-size: 13px; color: #25384b;"><strong>Topic 3</strong><br>height = 2+α<br>width = 3+β</span>
+              </div>
+            </div>
+            <p class="math-note">每个矩形的<strong>面积 ∝ 该 topic 被抽到的概率</strong>。Topic 3 的矩形最大，所以 "ball" 大概率被分到 Topic 3；但蓝色和绿色仍有非零面积（α、β 提供的 smoothing），保证它们仍可能被抽到。<strong>Slides 原话:</strong> <span class="en">"To give blue and green a small chance: Play a probability game — pick a topic (color) with probability proportional to the product of the two numbers."</span></p>
+          </div>
+          <div class="callout">
+            <strong>中文:</strong> Slide 里的 "ball in Doc 1" 通常会被 sample 到 Topic 3，因为 Topic 3 在 Doc 1 里多，而且 ball 在 Topic 3 里也多。alpha 和 beta 保证其他 topic 仍然有小概率，不会太早变成硬规则。<br>
+            <strong>English:</strong> In the "ball in Doc 1" example, Topic 3 receives the largest weight because Topic 3 is common in Doc 1 and the word "ball" is common in Topic 3. Alpha and beta provide smoothing so other topics still have a small chance.
+          </div>
+        </div>
+      </section>
+
+      <section id="priors">
+        <h2>Alpha / Beta</h2>
+        <figure class="wide-figure" style="margin-bottom: 16px;">
+          <img src="topic_modeling_assets/priors_visual.svg" alt="Alpha and beta priors visual explanation">
+          <figcaption><strong>图像记忆:</strong> alpha 决定一个文档混几个主题；beta 决定一个主题用多少词。低值更 focused，高值更 spread out。</figcaption>
+        </figure>
+        <div class="grid two">
+          <article class="card">
+            <h3>Alpha: Document-Topic Prior</h3>
+            <ul>
+              <li>控制一个 document 里的 topic distribution。</li>
+              <li>High alpha: 每个 document 倾向混合很多 topics。</li>
+              <li>Low alpha: 每个 document 倾向被少数 topics 主导。</li>
+            </ul>
+            <p><span class="label en-label">English</span><br><span class="en">Alpha controls how concentrated or spread out the topic distribution is within a document.</span></p>
+          </article>
+          <article class="card">
+            <h3>Beta: Topic-Word Prior</h3>
+            <ul>
+              <li>控制一个 topic 里的 word distribution。</li>
+              <li>High beta: topic 会比较平均地使用很多 words。</li>
+              <li>Low beta: topic 会集中在更少、更代表性的 words。</li>
+            </ul>
+            <p><span class="label en-label">English</span><br><span class="en">Beta controls how concentrated or spread out the word distribution is within a topic.</span></p>
+          </article>
+        </div>
+      </section>
+
+      <section id="workflow">
+        <h2>完整建模流程 / Workflow</h2>
+        <div class="process-grid">
+          <article class="card">
+            <h3>1. Prepare the corpus</h3>
+            <ul>
+              <li>确定 document unit: email、review、article、support ticket。</li>
+              <li>清洗文本: lowercase、remove punctuation、remove stopwords。</li>
+              <li>标准化词: stemming / lemmatization。</li>
+              <li>必要时加入 bigrams: customer service、shipping delay。</li>
+            </ul>
+            <p><span class="label en-label">English</span><br><span class="en">Define the document unit and preprocess the corpus by cleaning, tokenizing, normalizing words, and optionally adding meaningful bigrams.</span></p>
+          </article>
+          <article class="card">
+            <h3>2. Train and inspect LDA</h3>
+            <ul>
+              <li>选择 K，也就是 topic 数量。</li>
+              <li>训练 document-topic distribution 和 topic-word distribution。</li>
+              <li>查看每个 topic 的 top words。</li>
+              <li>查看 representative documents，避免只看词而误解 topic。</li>
+            </ul>
+            <p><span class="label en-label">English</span><br><span class="en">Train LDA, then inspect both top words and representative documents to understand each topic.</span></p>
+          </article>
+          <article class="card">
+            <h3>3. Label and use topics</h3>
+            <ul>
+              <li>用 human/domain knowledge 给 topic 命名。</li>
+              <li>用 topic proportions 做分类、趋势分析、推荐或反馈总结。</li>
+              <li>把发现转化成业务行动，比如优先修复最常见投诉。</li>
+            </ul>
+            <p><span class="label en-label">English</span><br><span class="en">Use domain knowledge to label topics and use topic proportions for classification, trend analysis, recommendation, or feedback prioritization.</span></p>
+          </article>
+          <article class="card">
+            <h3>4. Communicate limitations</h3>
+            <ul>
+              <li>topic label 是人工解释，不是模型自动知道的真相。</li>
+              <li>K、alpha、beta、preprocessing 都会改变结果。</li>
+              <li>短文本、噪声、拼写错误会降低 topic quality。</li>
+            </ul>
+            <p><span class="label en-label">English</span><br><span class="en">Communicate that topics require human interpretation and are sensitive to K, priors, preprocessing choices, and text quality.</span></p>
+          </article>
+        </div>
+      </section>
+
+      <section id="evaluation">
+        <h2>评估与选 K / Evaluation</h2>
+        <div class="grid two">
+          <article class="card">
+            <h3>How to choose K</h3>
+            <p>考试里不要说 K 随便选。要说 data scientist 会尝试多个 K，并结合 quantitative metrics 和 human interpretability。</p>
+            <ul>
+              <li>太小的 K: 不同主题被合并，topics 太粗。</li>
+              <li>太大的 K: topics 变碎、重复、难解释。</li>
+              <li>合适的 K: top words 清楚，representative documents 一致，业务上有意义。</li>
+            </ul>
+            <p><span class="label en-label">English</span><br><span class="en">A data scientist should try multiple values of K and choose a model whose topics are coherent, interpretable, and useful for the task.</span></p>
+          </article>
+          <article class="card">
+            <h3>How to validate topics</h3>
+            <ul>
+              <li>Topic coherence: top words 是否经常一起出现。</li>
+              <li>Human interpretability: 人能不能给 topic 起合理名字。</li>
+              <li>Representative documents: 高概率文档是否真的符合这个 topic。</li>
+              <li>Stability: 换 seed 或略改参数后 topics 是否大体稳定。</li>
+              <li>Usefulness: 结果能不能支持决策或分析。</li>
+            </ul>
+            <p><span class="label en-label">English</span><br><span class="en">Validate topics using coherence, human interpretability, representative documents, stability, and practical usefulness.</span></p>
+          </article>
+        </div>
+        <div class="callout" style="margin-top: 14px;">
+          考试句: A good topic model is not only mathematically fitted; it must also produce coherent, interpretable, and useful topics for the task.
+        </div>
+      </section>
+
+      <section id="visuals">
+        <h2>Slide 图像重点 / Visual Intuition</h2>
+        <div class="visual-grid">
+          <figure>
+            <img src="topic_modeling_assets/email_topics.png" alt="Email examples labeled with project, money, and personal topics">
+            <figcaption><strong>邮件例子:</strong> 一个 document 可以混合 project、money、personal 等 latent topics。<br><strong>English:</strong> A document can contain a mixture of latent topics such as project, finance, and personal content.</figcaption>
+          </figure>
+          <figure>
+            <img src="topic_modeling_assets/lda_steps.png" alt="LDA steps showing random topic assignment">
+            <figcaption><strong>LDA 起点:</strong> 先选 K，再 random assignment；后面靠迭代让 topics 变 coherent。<br><strong>English:</strong> LDA starts by choosing K and randomly assigning each word token to one of the topics.</figcaption>
+          </figure>
+          <figure>
+            <img src="topic_modeling_assets/gibbs_evolution.png" alt="Gibbs sampling topic assignments evolve">
+            <figcaption><strong>Gibbs intuition:</strong> 从 random colors 到 coherent topics，像把混乱物品逐步归类。<br><strong>English:</strong> Gibbs sampling repeatedly updates topic assignments until coherent topics emerge.</figcaption>
+          </figure>
+          <figure>
+            <img src="topic_modeling_assets/alpha_beta_counts.png" alt="Alpha and beta counts for ball in Doc 1">
+            <figcaption><strong>计数例子:</strong> 重采样 word topic 时，同时看 document-topic count 和 topic-word count。<br><strong>English:</strong> Resampling uses both document-topic counts and topic-word counts.</figcaption>
+          </figure>
+          <figure>
+            <img src="topic_modeling_assets/dirichlet_priors.png" alt="Dirichlet priors slide with alpha and beta definitions">
+            <figcaption><strong>Dirichlet priors:</strong> alpha 管 document-topic；beta 管 topic-word。<br><strong>English:</strong> Alpha controls document-topic distributions, while beta controls topic-word distributions.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="case-studies">
+        <h2>Case Studies for Using Topic Modeling</h2>
+        <figure class="wide-figure" style="margin-bottom: 16px;">
+          <img src="topic_modeling_assets/case_study_visual.svg" alt="Customer reviews topic modeling case study visual">
+          <figcaption><strong>案例题关键:</strong> 先定义目标和文档，再训练 LDA，最后把 topics 变成 action。考试里这一句很重要: connect topics to decisions.</figcaption>
+        </figure>
+        <div class="grid two">
+          <article class="card">
+            <h3>Case 1: Customer Reviews</h3>
+            <p><span class="label cn-label">场景</span><br>公司有几千条产品评论，想知道用户主要抱怨什么。</p>
+            <p><span class="label en-label">How to use TM</span><br><span class="en">Treat each review as a document, train LDA, label topics such as shipping, price, quality, or support, and track topic proportions by product or time period.</span></p>
+            <p><strong>Decision:</strong> prioritize fixes for the topics with high frequency and negative sentiment.</p>
+          </article>
+
+          <article class="card">
+            <h3>Case 2: News Trend Analysis</h3>
+            <p><span class="label cn-label">场景</span><br>分析一段时间内的大量新闻，想知道公众关注点如何变化。</p>
+            <p><span class="label en-label">How to use TM</span><br><span class="en">Treat each article as a document, discover topics such as economy, health, politics, or sports, then plot topic proportions over time.</span></p>
+            <p><strong>Decision:</strong> identify emerging themes and explain changes in media attention.</p>
+          </article>
+
+          <article class="card">
+            <h3>Case 3: Support Tickets</h3>
+            <p><span class="label cn-label">场景</span><br>客服系统有大量 ticket，团队想自动总结常见问题。</p>
+            <p><span class="label en-label">How to use TM</span><br><span class="en">Use each support ticket as a document, identify topics like login issues, billing problems, bugs, or feature requests, and route tickets based on dominant topics.</span></p>
+            <p><strong>Decision:</strong> improve routing, staffing, and product backlog prioritization.</p>
+          </article>
+
+          <article class="card">
+            <h3>Case 4: Research Papers</h3>
+            <p><span class="label cn-label">场景</span><br>研究者想快速理解一个领域里有哪些主要研究方向。</p>
+            <p><span class="label en-label">How to use TM</span><br><span class="en">Treat abstracts as documents, discover research themes, inspect representative papers, and track how topics grow or decline across years.</span></p>
+            <p><strong>Decision:</strong> summarize a field, find related papers, or identify research gaps.</p>
+          </article>
+        </div>
+
+        <div class="panel" style="margin-top: 14px;">
+          <h3>How to write any case study answer</h3>
+          <ol>
+            <li><strong>Goal:</strong> state the business or research question.</li>
+            <li><strong>Data:</strong> define what counts as a document.</li>
+            <li><strong>Model:</strong> preprocess text, choose K, train LDA, inspect topics.</li>
+            <li><strong>Interpretation:</strong> label topics using top words and representative documents.</li>
+            <li><strong>Action:</strong> explain how topic proportions support a decision.</li>
+            <li><strong>Limitations:</strong> mention interpretability, parameter sensitivity, and text quality.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="applications">
+        <h2>应用与优缺点 / Applications</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>Applications</h3>
+            <ul>
+              <li>Document classification</li>
+              <li>Content recommendation</li>
+              <li>Summarization</li>
+              <li>Trend analysis</li>
+              <li>Customer feedback analysis</li>
+            </ul>
+            <p><span class="label cn-label">中文</span><br>可以用于文档分类、推荐、总结、趋势分析和客户反馈分析。</p>
+          </article>
+          <article class="card">
+            <h3>Advantages</h3>
+            <ul>
+              <li>Insight generation: 发现隐藏结构。</li>
+              <li>Unsupervised: 不需要 labeled data。</li>
+              <li>Scalable: 可以处理大量文本。</li>
+            </ul>
+            <p><span class="label en-label">English</span><br><span class="en">Topic modeling can reveal hidden structure in unlabeled text and scale to large document collections.</span></p>
+          </article>
+          <article class="card">
+            <h3>Challenges</h3>
+            <ul>
+              <li>Interpretability: topic 不一定容易解释。</li>
+              <li>Parameter sensitivity: K、alpha、beta 会影响结果。</li>
+              <li>Quality of text: 噪声和清洗质量很重要。</li>
+            </ul>
+            <p><span class="label en-label">English</span><br><span class="en">The main challenges are interpretability, parameter sensitivity, and dependence on text quality.</span></p>
+          </article>
+        </div>
+      </section>
+
+      <section id="framework">
+        <h2>Data Scientist 答题框架 / Answer Framework</h2>
+        <div class="answer-flow">
+          <div class="step"><strong>Define the goal</strong> 先说业务或研究问题，比如发现 customer reviews 里的主要投诉主题。</div>
+          <div class="step"><strong>Define documents</strong> 每条 email、review、article、ticket 都可以是一个 document。</div>
+          <div class="step"><strong>Preprocess text</strong> tokenize、lowercase、remove stopwords、lemmatize/stem，必要时处理 bigrams。</div>
+          <div class="step"><strong>Train LDA</strong> 选择 K、alpha、beta，训练 document-topic 和 topic-word distributions。</div>
+          <div class="step"><strong>Interpret topics</strong> 看 top words 和 representative documents，然后人工命名 topics。</div>
+          <div class="step"><strong>Use the result</strong> 用 topic proportions 做分类、推荐、趋势分析或反馈优先级排序。</div>
+          <div class="step"><strong>Validate and communicate limits</strong> 检查 coherence、业务可解释性，并说明 parameter sensitivity 和 text quality risk。</div>
+        </div>
+        <div class="panel" style="margin-top: 14px;">
+          <h3>Scenario answer template</h3>
+          <p>如果题目问 “How would you analyze a collection of documents using topic modeling?” 可以这样答：</p>
+          <div class="equation" style="white-space: normal;">
+            I would define each text item as a document, preprocess the text, train LDA with several candidate values of K, inspect top words and representative documents, label the discovered topics with domain knowledge, use document-topic proportions for analysis or decision making, and validate the result using coherence, interpretability, and business usefulness.
+          </div>
+        </div>
+      </section>
+
+      <section id="practice">
+        <h2>练习问答 / Practice Q&A</h2>
+        <div class="practice">
+          <details>
+            <summary>Q1. What is topic modeling?</summary>
+            <div class="detail-body">
+              <p><span class="label cn-label">中文理解</span><br>主题建模是一种无监督文本分析方法，用来发现一批文档中隐藏的主题结构。</p>
+              <p><span class="label en-label">English answer</span><br><span class="en">Topic modeling is an unsupervised NLP technique that discovers hidden themes in a collection of documents. It represents documents as mixtures of topics and topics as distributions over words.</span></p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Q2. Explain LDA in simple terms.</summary>
+            <div class="detail-body">
+              <p><span class="label cn-label">中文理解</span><br>LDA 假设每个文档由多个主题混合而成，每个词由文档中的某个主题生成。</p>
+              <p><span class="label en-label">English answer</span><br><span class="en">LDA assumes each document contains several topics and each word is generated from one of those topics. The model estimates both the topic mixture in each document and the word mixture in each topic.</span></p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Q3. How does Gibbs sampling work in LDA?</summary>
+            <div class="detail-body">
+              <p><span class="label cn-label">中文理解</span><br>先随机给词分配主题，再反复重新采样。依据是 topic 在 document 中多常见，以及 word 在 topic 中多常见。</p>
+              <p><span class="label en-label">English answer</span><br><span class="en">It starts with random topic assignments. Then it repeatedly revisits each word and resamples its topic based on how common that topic is in the document and how common that word is in the topic. After many iterations, coherent topics emerge.</span></p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Q4. What do alpha and beta control?</summary>
+            <div class="detail-body">
+              <p><span class="label cn-label">中文理解</span><br>alpha 管一个文档里主题分布的分散程度；beta 管一个主题里词分布的分散程度。</p>
+              <p><span class="label en-label">English answer</span><br><span class="en">Alpha controls the document-topic distribution. High alpha means documents mix many topics; low alpha means documents focus on a few topics. Beta controls the topic-word distribution. High beta means broad topics; low beta means focused topics with fewer characteristic words.</span></p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Q5. How would you use topic modeling for customer feedback?</summary>
+            <div class="detail-body">
+              <p><span class="label cn-label">中文理解</span><br>把每条 review 当成文档，清洗文本，训练 LDA，查看 top words 和代表评论，命名主题，再用 topic proportions 找主要问题和趋势。</p>
+              <p><span class="label en-label">English answer</span><br><span class="en">I would treat each review as a document, clean the text, train LDA with several K values, inspect top words and representative reviews, label topics like shipping, price, quality, or support, then track topic proportions by product or time period. I would validate topics with coherence and domain judgment, then use them to prioritize improvements.</span></p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Q6. Why is LDA called generative?</summary>
+            <div class="detail-body">
+              <p><span class="label cn-label">中文理解</span><br>因为 LDA 描述了文档如何被生成：先选文档主题比例，再为每个词选主题，再从该主题中选词。</p>
+              <p><span class="label en-label">English answer</span><br><span class="en">LDA is generative because it describes a process for how documents could be generated: first choose a topic mixture for a document, then for each word choose a topic from that mixture, and finally choose a word from that topic's word distribution.</span></p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Q7. What output does an LDA model produce?</summary>
+            <div class="detail-body">
+              <p><span class="label cn-label">中文理解</span><br>LDA 输出每个 topic 的高概率词，以及每个 document 的 topic proportion。</p>
+              <p><span class="label en-label">English answer</span><br><span class="en">LDA produces topic-word distributions, which show the important words in each topic, and document-topic distributions, which show how much each topic appears in each document.</span></p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Q8. How do you know if topics are useful?</summary>
+            <div class="detail-body">
+              <p><span class="label cn-label">中文理解</span><br>好的 topics 应该 top words 一致、代表文档匹配、人能解释，并且对任务有帮助。</p>
+              <p><span class="label en-label">English answer</span><br><span class="en">Useful topics should have coherent top words, representative documents that match the topic, meaningful human labels, and practical value for the goal such as summarization, recommendation, trend analysis, or customer feedback prioritization.</span></p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Q9. What happens if K is too small or too large?</summary>
+            <div class="detail-body">
+              <p><span class="label cn-label">中文理解</span><br>K 太小会把不同主题混在一起；K 太大会让主题过碎、重复、难解释。</p>
+              <p><span class="label en-label">English answer</span><br><span class="en">If K is too small, different themes may be merged into broad, vague topics. If K is too large, topics may become fragmented, repetitive, or hard to interpret.</span></p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Q10. What should a data scientist be careful about?</summary>
+            <div class="detail-body">
+              <p><span class="label cn-label">中文理解</span><br>注意 preprocessing、噪声文本、短文本、参数敏感性，并且不要把 topic label 当成绝对真相。</p>
+              <p><span class="label en-label">English answer</span><br><span class="en">A data scientist should be careful about preprocessing choices, noisy text, short documents, parameter sensitivity, and over-interpreting topics as objective truth. Topic labels require human judgment.</span></p>
+            </div>
+          </details>
+        </div>
+        <div class="callout warn" style="margin-top: 16px;">
+          记忆版: goal -> documents -> preprocessing -> LDA/K -> top words/docs -> label topics -> use insights -> validate limitations.
+        </div>
+      </section>
+
+      <section id="cheatsheet">
+        <h2>速记表 / Cheat Sheet</h2>
+        <table class="mini-table">
+          <thead>
+            <tr>
+              <th>Concept</th>
+              <th>What to say in the exam</th>
+              <th>Why it matters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Latent</td>
+              <td>Latent means hidden or not directly observed.</td>
+              <td>Topic labels are inferred, not given beforehand.</td>
+            </tr>
+            <tr>
+              <td>Topic</td>
+              <td>A topic is a probability distribution over words.</td>
+              <td>Top words help humans interpret and name topics.</td>
+            </tr>
+            <tr>
+              <td>Document</td>
+              <td>A document is a mixture of topics.</td>
+              <td>A document does not need to belong to only one class.</td>
+            </tr>
+            <tr>
+              <td>Gibbs sampling</td>
+              <td>Resample each word's topic using document-topic and topic-word counts.</td>
+              <td>This is how random assignments become coherent topics.</td>
+            </tr>
+            <tr>
+              <td>Alpha</td>
+              <td>Alpha controls how many topics appear in each document.</td>
+              <td>Low alpha means focused documents; high alpha means mixed documents.</td>
+            </tr>
+            <tr>
+              <td>Beta</td>
+              <td>Beta controls how many words appear in each topic.</td>
+              <td>Low beta means focused topics; high beta means broader topics.</td>
+            </tr>
+            <tr>
+              <td>Validation</td>
+              <td>Check coherence, representative documents, interpretability, and usefulness.</td>
+              <td>A model is only helpful if the topics make sense for the task.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="grid two" style="margin-top: 14px;">
+          <article class="card">
+            <h3>Common mistakes to avoid</h3>
+            <ul>
+              <li>Do not say LDA is supervised classification.</li>
+              <li>Do not say a topic is just one keyword.</li>
+              <li>Do not ignore preprocessing and text quality.</li>
+              <li>Do not assume the model names topics automatically.</li>
+              <li>Do not pick K without explaining evaluation or iteration.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>One-paragraph final review</h3>
+            <p>Topic modeling helps a data scientist explore unlabeled text by discovering latent themes. In LDA, documents are mixtures of topics and topics are distributions over words. Gibbs sampling iteratively improves word-topic assignments using document-topic and topic-word counts. The final topics must be interpreted, labeled, validated, and connected back to the original decision-making goal.</p>
+          </article>
+        </div>
+      </section>
+
+      <div class="footer-note">
+        Final bilingual study page built from the reviewed Topic Modeling slides. Use this HTML as the single exam-prep page.
+      </div>
+    </main>
+  </div>
+</body>
+</html>
