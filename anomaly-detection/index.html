@@ -1,0 +1,1153 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Anomaly Detection Exam Prep</title>
+  <style>
+    :root {
+      --bg: #f5f7fa;
+      --paper: #ffffff;
+      --ink: #17202a;
+      --muted: #5f6b7a;
+      --line: #dce4ec;
+      --red: #a30f35;
+      --teal: #087f83;
+      --blue: #245da8;
+      --green: #2f7d42;
+      --amber: #a66508;
+      --violet: #6f4aa8;
+      --shadow: 0 16px 38px rgba(31, 45, 61, 0.08);
+      --radius: 8px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, "Noto Sans SC", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.62;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    strong {
+      color: #111923;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      background: var(--paper);
+      border-right: 1px solid var(--line);
+      overflow-y: auto;
+    }
+
+    .brand {
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand .course {
+      color: var(--red);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand h1 {
+      margin: 7px 0 8px;
+      font-size: 26px;
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .brand p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    nav {
+      display: grid;
+      gap: 4px;
+    }
+
+    nav a {
+      display: block;
+      padding: 9px 10px;
+      border-radius: 6px;
+      color: #354050;
+      font-size: 14px;
+      border: 1px solid transparent;
+    }
+
+    nav a:hover {
+      background: #f2f5f8;
+      border-color: var(--line);
+    }
+
+    .main {
+      padding: 32px clamp(20px, 4vw, 56px) 64px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .source {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .print-btn {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--ink);
+      border-radius: 6px;
+      padding: 9px 12px;
+      font: inherit;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(31, 45, 61, 0.05);
+    }
+
+    .print-btn:hover {
+      border-color: #b9c5d3;
+    }
+
+    section {
+      scroll-margin-top: 24px;
+      margin-bottom: 28px;
+    }
+
+    section > h2,
+    .panel h2 {
+      margin: 0 0 14px;
+      font-size: clamp(23px, 2.4vw, 34px);
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 19px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 12px;
+    }
+
+    ul,
+    ol {
+      margin: 9px 0 0;
+      padding-left: 22px;
+    }
+
+    li {
+      margin: 6px 0;
+    }
+
+    .panel,
+    .card,
+    .method,
+    .figure,
+    .qa,
+    .cheat {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .panel {
+      padding: clamp(20px, 3vw, 30px);
+    }
+
+    .lead {
+      font-size: 19px;
+      max-width: 840px;
+      color: #2c3541;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 750;
+      background: #edf3f8;
+      color: #223246;
+      border: 1px solid #d7e1eb;
+    }
+
+    .badge.red {
+      background: #f8e9ed;
+      color: var(--red);
+      border-color: #efc9d3;
+    }
+
+    .badge.teal {
+      background: #e4f5f6;
+      color: var(--teal);
+      border-color: #bde4e7;
+    }
+
+    .badge.amber {
+      background: #fbf0df;
+      color: var(--amber);
+      border-color: #efd4a6;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .card,
+    .method,
+    .qa,
+    .cheat {
+      padding: 18px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .tagline {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .callout {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-left: 4px solid var(--teal);
+      background: #edf8f8;
+      border-radius: 6px;
+      color: #20343a;
+    }
+
+    .formula {
+      margin: 14px 0;
+      padding: 16px;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #fbfdff 0%, #f4f7fb 100%);
+      border: 1px solid #dce6ef;
+      border-left: 5px solid var(--blue);
+      line-height: 1.55;
+      overflow-x: auto;
+    }
+
+    .formula-title {
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .math-line {
+      display: block;
+      min-width: max-content;
+      color: #111923;
+      font-family: "Times New Roman", "Noto Serif", serif;
+      font-size: clamp(24px, 3vw, 34px);
+      line-height: 1.35;
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
+
+    .math-line + .math-line {
+      margin-top: 8px;
+    }
+
+    .math-line var {
+      font-style: italic;
+    }
+
+    .frac {
+      display: inline-grid;
+      grid-template-rows: auto auto;
+      align-items: center;
+      justify-items: center;
+      vertical-align: middle;
+      margin: 0 0.08em;
+      font-size: 0.78em;
+      line-height: 1.05;
+    }
+
+    .frac .top {
+      width: 100%;
+      padding: 0 0.24em 0.08em;
+      border-bottom: 1.8px solid currentColor;
+      text-align: center;
+    }
+
+    .frac .bottom {
+      padding-top: 0.08em;
+      text-align: center;
+    }
+
+    .radicand {
+      display: inline-block;
+      padding: 0.08em 0.16em 0 0.18em;
+      border-top: 2px solid currentColor;
+      vertical-align: middle;
+    }
+
+    .symbol-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 14px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #e2e8ef;
+      color: #354050;
+      font-size: 14px;
+    }
+
+    .symbol-list span {
+      display: block;
+    }
+
+    .formula-note {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 820px;
+    }
+
+    th,
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f1f5f9;
+      color: #263241;
+      font-size: 14px;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .pill.blue {
+      background: #e8f0fb;
+      color: var(--blue);
+      border-color: #c9daf4;
+    }
+
+    .pill.green {
+      background: #e9f5ec;
+      color: var(--green);
+      border-color: #c8e5d0;
+    }
+
+    .pill.red {
+      background: #f9e8ed;
+      color: var(--red);
+      border-color: #efc7d2;
+    }
+
+    .pill.amber {
+      background: #fbf0df;
+      color: var(--amber);
+      border-color: #efd4a6;
+    }
+
+    .pill.violet {
+      background: #f0ebf8;
+      color: var(--violet);
+      border-color: #ddd1ee;
+    }
+
+    .diagram {
+      margin-top: 10px;
+      width: 100%;
+      min-height: 270px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfe;
+      overflow: hidden;
+    }
+
+    .diagram svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .method h3 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .method .english {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+      color: #344051;
+      font-size: 14px;
+    }
+
+    .figure {
+      overflow: hidden;
+    }
+
+    .figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #fff;
+    }
+
+    .figure figcaption {
+      padding: 12px 14px 14px;
+      color: var(--muted);
+      font-size: 14px;
+      border-top: 1px solid var(--line);
+    }
+
+    .step-list {
+      counter-reset: steps;
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .step {
+      position: relative;
+      padding: 12px 14px 12px 48px;
+      background: #f8fafc;
+      border: 1px solid #e1e7ee;
+      border-radius: 8px;
+    }
+
+    .step::before {
+      counter-increment: steps;
+      content: counter(steps);
+      position: absolute;
+      left: 14px;
+      top: 12px;
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    details {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px 14px;
+      box-shadow: 0 6px 18px rgba(31, 45, 61, 0.05);
+    }
+
+    details + details {
+      margin-top: 10px;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 800;
+      color: #263241;
+    }
+
+    .mini {
+      font-size: 14px;
+    }
+
+    .footer-note {
+      margin-top: 32px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 980px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      aside {
+        position: relative;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid.two,
+      .grid.three,
+      .symbol-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .main {
+        padding: 22px 14px 48px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      nav {
+        grid-template-columns: 1fr;
+      }
+
+      .panel,
+      .card,
+      .method,
+      .qa,
+      .cheat {
+        padding: 15px;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .layout {
+        display: block;
+      }
+
+      aside,
+      .topbar {
+        display: none;
+      }
+
+      .main {
+        padding: 0;
+      }
+
+      .panel,
+      .card,
+      .method,
+      .figure,
+      .qa,
+      .cheat,
+      .table-wrap {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside>
+      <div class="brand">
+        <div class="course">CSCI 185 Data Mining</div>
+        <h1>Anomaly Detection</h1>
+        <p>异常检测复习页：定义、算法、适用场景、参数与练习。</p>
+      </div>
+      <nav aria-label="Study guide navigation">
+        <a href="#overview">1. 核心概念</a>
+        <a href="#learning">2. 学习设置</a>
+        <a href="#distance">3. 距离与相似度</a>
+        <a href="#algorithms">4. 算法怎么工作</a>
+        <a href="#dbscan-example">5. DBSCAN 例题</a>
+        <a href="#choice">6. 什么时候用哪个</a>
+        <a href="#parameters">7. 参数怎么选</a>
+        <a href="#workflow">8. 应用流程</a>
+        <a href="#slides">9. 课堂图像</a>
+        <a href="#coverage">10. 覆盖检查</a>
+        <a href="#practice">11. 练习题</a>
+        <a href="#cheatsheet">12. Cheat Sheet</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div class="source">Source: 7_Anomaly_Detection.pdf - 62 slides</div>
+        <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
+      </div>
+
+      <section id="overview">
+        <div class="panel">
+          <h2>What Is Anomaly Detection?</h2>
+          <p class="lead">
+            <strong>异常检测</strong>是在数据中找出明显偏离正常模式的点、事件或样本。异常也常叫 <strong>outliers</strong>。
+            它们可能来自数据收集错误、真实但罕见的事件，或系统故障。
+          </p>
+          <div class="badges">
+            <span class="badge red">rare event</span>
+            <span class="badge teal">data error</span>
+            <span class="badge amber">system malfunction</span>
+            <span class="badge">deviates from normal behavior</span>
+          </div>
+          <div class="callout">
+            <strong>English exam phrase:</strong>
+            An anomaly is an observation that significantly deviates from the expected or normal behavior of the dataset.
+          </div>
+        </div>
+      </section>
+
+      <section id="learning">
+        <h2>Learning Setups</h2>
+        <div class="grid two">
+          <article class="card">
+            <h3>Supervised Anomaly Detection</h3>
+            <p><strong>中文理解：</strong>训练数据已经标好了 normal / anomaly。问题变成一个二分类任务。</p>
+            <p><strong>How it works:</strong> 学一个分类器，把新样本判成 normal 或 anomaly。课件用 KNN 分类作为例子：看最近的 K 个已标注邻居，用多数投票决定类别。</p>
+            <p><strong>适用：</strong>你有可靠标签，且异常类型在训练集中出现过。例如历史欺诈记录、已标注的机器故障日志。</p>
+          </article>
+          <article class="card">
+            <h3>Unsupervised Anomaly Detection</h3>
+            <p><strong>中文理解：</strong>没有 anomaly 标签，通常假设“大多数样本是正常的”。算法需要自己发现稀有、孤立或低密度的点。</p>
+            <p><strong>How it works:</strong> 给每个点一个 anomaly score，或直接把低密度区域标成 noise/outlier。</p>
+            <p><strong>适用：</strong>异常很少、标签贵或标签不完整。这也是课件强调 anomaly detection 常常采用的设置。</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="distance">
+        <h2>Similarity And Distance</h2>
+        <div class="grid two">
+          <div class="panel">
+            <h3>距离为什么重要？</h3>
+            <p>
+              KNN、K-means、DBSCAN 都依赖“点和点之间有多近”。距离越小，样本越相似；距离越大，越可能偏离正常群体。
+            </p>
+            <div class="formula">
+              <div class="formula-title">Euclidean Distance</div>
+              <span class="math-line">
+                <var>d</var>(<var>p</var>, <var>q</var>) =
+                &#8730;<span class="radicand">&Sigma;<sub>i=1</sub><sup>n</sup>(<var>p</var><sub>i</sub> - <var>q</var><sub>i</sub>)<sup>2</sup></span>
+              </span>
+              <div class="symbol-list">
+                <span><strong>p, q:</strong> two data points</span>
+                <span><strong>n:</strong> number of features</span>
+                <span><strong>p<sub>i</sub>, q<sub>i</sub>:</strong> values on feature i</span>
+                <span><strong>intuition:</strong> straight-line distance in feature space</span>
+              </div>
+            </div>
+            <p class="muted mini">
+              注意：不同特征量纲差很大时，要先做 scaling，否则“数值范围大的特征”会主导距离。
+            </p>
+          </div>
+          <div class="panel">
+            <h3>直觉图</h3>
+            <div class="diagram" aria-label="Distance intuition diagram">
+              <svg viewBox="0 0 760 330" role="img">
+                <rect width="760" height="330" fill="#fbfcfe"></rect>
+                <line x1="70" y1="270" x2="690" y2="270" stroke="#94a3b8" stroke-width="2"></line>
+                <line x1="70" y1="270" x2="70" y2="50" stroke="#94a3b8" stroke-width="2"></line>
+                <text x="680" y="300" fill="#64748b" font-size="16">F1</text>
+                <text x="28" y="62" fill="#64748b" font-size="16">F2</text>
+
+                <g fill="#2567a9" opacity="0.9">
+                  <circle cx="150" cy="218" r="7"></circle><circle cx="171" cy="204" r="7"></circle><circle cx="188" cy="226" r="7"></circle>
+                  <circle cx="205" cy="194" r="7"></circle><circle cx="229" cy="214" r="7"></circle><circle cx="248" cy="199" r="7"></circle>
+                  <circle cx="261" cy="230" r="7"></circle><circle cx="282" cy="211" r="7"></circle><circle cx="302" cy="222" r="7"></circle>
+                  <circle cx="321" cy="202" r="7"></circle><circle cx="345" cy="215" r="7"></circle>
+                </g>
+                <g fill="#a30f35">
+                  <circle cx="590" cy="85" r="8"></circle>
+                  <circle cx="630" cy="116" r="8"></circle>
+                  <circle cx="662" cy="74" r="8"></circle>
+                </g>
+                <circle cx="235" cy="214" r="122" fill="none" stroke="#087f83" stroke-width="4" stroke-dasharray="9 8"></circle>
+                <line x1="345" y1="202" x2="590" y2="85" stroke="#a66508" stroke-width="4"></line>
+                <text x="165" y="84" fill="#087f83" font-size="18" font-weight="700">normal dense region</text>
+                <text x="515" y="52" fill="#a30f35" font-size="18" font-weight="700">far isolated points</text>
+                <text x="412" y="163" fill="#a66508" font-size="16">large distance</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="algorithms">
+        <h2>Algorithms Discussed In Class</h2>
+        <div class="grid two">
+          <article class="method">
+            <h3><span class="pill blue">Supervised</span> KNN Classifier</h3>
+            <p><strong>核心想法：</strong>相似样本应该有相似标签。给一个 test point，计算它和训练点的距离，找最近的 K 个邻居，用多数投票预测 normal / anomaly。</p>
+            <div class="step-list">
+              <div class="step">选择 K 和距离函数。</div>
+              <div class="step">对新样本，计算它到所有训练样本的距离。</div>
+              <div class="step">排序，选 K 个最近邻。</div>
+              <div class="step">多数投票：邻居里 anomaly 多就判 anomaly。</div>
+            </div>
+            <p class="english"><strong>English exam phrase:</strong> KNN classifies a point by the majority label among its K nearest labeled neighbors.</p>
+          </article>
+
+          <article class="method">
+            <h3><span class="pill green">Unsupervised</span> KNN Anomaly Score</h3>
+            <p><strong>核心想法：</strong>正常点通常在密集区域，离邻居近；异常点比较孤立，离最近邻也远。</p>
+            <div class="formula">
+              <div class="formula-title">KNN Anomaly Score</div>
+              <span class="math-line">
+                <var>s</var><sub>i</sub> =
+                <span class="frac"><span class="top">1</span><span class="bottom"><var>k</var></span></span>
+                &Sigma;<sub>j=1</sub><sup>k</sup>
+                <var>d</var>(<var>x</var><sub>i</sub>, <var>x</var><sub>(j)</sub>)
+              </span>
+              <div class="symbol-list">
+                <span><strong>s<sub>i</sub>:</strong> anomaly score for point x<sub>i</sub></span>
+                <span><strong>x<sub>(j)</sub>:</strong> j-th nearest neighbor of x<sub>i</sub></span>
+                <span><strong>large score:</strong> isolated, likely anomaly</span>
+                <span><strong>small score:</strong> dense neighborhood, likely normal</span>
+              </div>
+              <div class="formula-note">课件阈值例子：if s<sub>i</sub> &gt; 95th percentile, mark as anomaly.</div>
+            </div>
+            <p><strong>Threshold:</strong> 课件例子使用分位数阈值，例如 95th percentile。若 s<sub>i</sub> 大于阈值，则标为 anomaly。</p>
+            <p class="english"><strong>English exam phrase:</strong> In unsupervised KNN anomaly detection, the average distance to the k nearest neighbors is used as the anomaly score.</p>
+          </article>
+
+          <article class="method">
+            <h3><span class="pill amber">Clustering</span> K-Means</h3>
+            <p><strong>核心想法：</strong>把数据划分成 K 个由 centroid 表示的簇。异常通常表现为离最近 centroid 很远，或落在非常小/稀疏的簇中。</p>
+            <div class="step-list">
+              <div class="step">选择 K 个初始 centroid。</div>
+              <div class="step">把每个点分配给最近的 centroid。</div>
+              <div class="step">用分配到该簇的点的平均值更新 centroid。</div>
+              <div class="step">重复分配和更新，直到簇分配不再变化。</div>
+            </div>
+            <p><strong>Anomaly score:</strong> 常见做法是用“到最近 centroid 的距离”作为异常分数。</p>
+            <p class="english"><strong>English exam phrase:</strong> K-means alternates between assigning points to the nearest centroid and recomputing centroids as cluster means.</p>
+          </article>
+
+          <article class="method">
+            <h3><span class="pill red">Density</span> DBSCAN</h3>
+            <p><strong>核心想法：</strong>簇是高密度区域，异常是低密度区域的 noise。DBSCAN 不需要预先指定簇数量，并且能找到非圆形、任意形状的簇。</p>
+            <div class="formula">
+              <div class="formula-title">DBSCAN Neighborhood</div>
+              <span class="math-line">
+                <var>N</var><sub>&epsilon;</sub>(<var>x</var>) =
+                { <var>y</var> &isin; <var>D</var> : <var>d</var>(<var>x</var>, <var>y</var>) &le; &epsilon; }
+              </span>
+              <span class="math-line">
+                core(<var>x</var>) if |<var>N</var><sub>&epsilon;</sub>(<var>x</var>)| &ge; MinPts
+              </span>
+              <div class="symbol-list">
+                <span><strong>&epsilon; / eps:</strong> neighborhood radius</span>
+                <span><strong>MinPts:</strong> minimum points required for density</span>
+                <span><strong>core:</strong> enough neighbors inside eps</span>
+                <span><strong>noise:</strong> neither core nor border</span>
+              </div>
+            </div>
+            <p><strong>点的类型：</strong>core point 有足够邻居；border point 邻居不足但在某个 core point 的 eps-neighborhood 内；noise point 既不是 core 也不是 border。</p>
+            <p class="english"><strong>English exam phrase:</strong> DBSCAN identifies dense regions using eps and MinPts, then labels points outside dense regions as noise or outliers.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="dbscan-example">
+        <h2>DBSCAN Worked Example From Class</h2>
+        <div class="grid two">
+          <article class="panel">
+            <h3>Example settings</h3>
+            <p>课件例题使用 <strong>eps = 1.9</strong> and <strong>MinPts = 4</strong>。先数每个点 eps 半径内的邻居，再判断 core / border / noise。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Point type</th>
+                    <th>Class example</th>
+                    <th>Reason</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="pill red">Core</span></td>
+                    <td>P2, P5, P11</td>
+                    <td>neighbor count reaches MinPts under eps = 1.9.</td>
+                  </tr>
+                  <tr>
+                    <td><span class="pill amber">Border</span></td>
+                    <td>P1, P3, P4, P6, P7, P8, P10, P12</td>
+                    <td>not enough neighbors themselves, but inside a core point's eps-neighborhood.</td>
+                  </tr>
+                  <tr>
+                    <td><span class="pill blue">Noise</span></td>
+                    <td>P9</td>
+                    <td>neither a core point nor reachable from a core point.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+          <article class="panel">
+            <h3>How clusters are expanded</h3>
+            <div class="step-list">
+              <div class="step">Mark each point as core, border, or noise using eps and MinPts.</div>
+              <div class="step">Pick an unvisited core point and start a new cluster.</div>
+              <div class="step">Add all points in its eps-neighborhood to that cluster.</div>
+              <div class="step">If a neighbor is also core, expand again from that neighbor.</div>
+              <div class="step">Stop when no more density-reachable points can be added, then start from the next unvisited core point.</div>
+            </div>
+            <div class="callout">
+              In the class example, one cluster grows around P2 and P11; another grows around P5. P9 remains noise.
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="choice">
+        <h2>When To Apply Which?</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Situation</th>
+                <th>Best choice</th>
+                <th>Why</th>
+                <th>Watch out</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>你有 normal/anomaly 标签，而且标签可信</td>
+                <td><span class="pill blue">Supervised classifier</span></td>
+                <td>可以直接学习 normal vs anomaly 的决策边界。KNN 是最直观的基线。</td>
+                <td>训练集必须包含足够代表性的异常；新型异常可能漏掉。</td>
+              </tr>
+              <tr>
+                <td>没有标签；想找“离别人很远”的孤立点</td>
+                <td><span class="pill green">KNN score</span></td>
+                <td>异常分数容易解释：平均邻居距离越大越异常。</td>
+                <td>K 太小会对噪声敏感；K 太大可能忽略局部异常。</td>
+              </tr>
+              <tr>
+                <td>数据大致形成圆形/凸形簇，需要快速 baseline</td>
+                <td><span class="pill amber">K-Means</span></td>
+                <td>算法简单快，能用距离 centroid 的程度做异常分数。</td>
+                <td>需要选 K；不适合弯曲形状、不同密度或非球形簇。</td>
+              </tr>
+              <tr>
+                <td>簇形状不规则，低密度点本身就是异常</td>
+                <td><span class="pill red">DBSCAN</span></td>
+                <td>不需要指定簇数量，能发现任意形状簇，并天然输出 noise/outlier。</td>
+                <td>eps 和 MinPts 很关键；高维下距离变稀疏，参数更难调。</td>
+              </tr>
+              <tr>
+                <td>高维数据，例如文本向量、很多传感器特征</td>
+                <td><span class="pill violet">先降维/选特征</span></td>
+                <td>距离在高维空间会变得不稳定，DBSCAN 尤其受影响。</td>
+                <td>可先标准化、PCA/UMAP 降维，再用 KNN 或 DBSCAN。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="parameters">
+        <h2>Parameters And Thresholds</h2>
+        <div class="grid two">
+          <article class="card">
+            <h3>K in KNN</h3>
+            <p><strong>Small K:</strong> 捕捉局部密度，能发现很局部的异常，但容易受噪声影响。</p>
+            <p><strong>Large K:</strong> 捕捉更广的邻域结构，结果更稳定，但可能把局部异常平均掉。</p>
+            <p><strong>考试记法：</strong>K controls the scale of the neighborhood used to define normality.</p>
+          </article>
+          <article class="card">
+            <h3>Percentile Thresholding</h3>
+            <p>异常分数通常不是均匀分布，而是 heavy-tailed：大多数正常点分数低，少数孤立点分数高。</p>
+            <p>因此可以用 95th percentile 之类的分位数作阈值。超过阈值的点被标成 anomaly。</p>
+          </article>
+          <article class="card">
+            <h3>MinPts in DBSCAN</h3>
+            <p><strong>低维 2-3D:</strong> MinPts 约 4-6。</p>
+            <p><strong>中维 5-10D:</strong> MinPts 约 2 x D。</p>
+            <p><strong>高维 >10D:</strong> MinPts 约 3 x D，并且通常需要先降维。</p>
+          </article>
+          <article class="card">
+            <h3>eps in DBSCAN</h3>
+            <p>用 k-distance graph 选 eps。对每个点，计算到第 k 个最近邻的距离，其中 k = MinPts - 1，然后排序画图。</p>
+            <div class="formula">
+              <div class="formula-title">k-distance graph</div>
+              <span class="math-line"><var>k</var> = MinPts - 1</span>
+              <span class="math-line">eps = distance at the elbow / knee</span>
+              <div class="formula-note">Left flat region = dense clusters; right steep region = sparse noise; knee = transition point.</div>
+            </div>
+            <p><strong>选择 elbow/knee:</strong> 平坦区域是 dense clusters；急剧上升区域是 noise；弯折处是较合适的 eps。</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="workflow">
+        <h2>Practical Workflow</h2>
+        <div class="panel">
+          <div class="step-list">
+            <div class="step"><strong>Define the goal:</strong> 要找数据错误、欺诈、机器故障，还是罕见但有意义的事件？</div>
+            <div class="step"><strong>Prepare data:</strong> 处理缺失值，标准化数值特征，必要时降维。</div>
+            <div class="step"><strong>Choose setup:</strong> 有标签用 supervised；没标签用 KNN score、K-means 或 DBSCAN。</div>
+            <div class="step"><strong>Compute score or labels:</strong> KNN/K-means 给 anomaly score；DBSCAN 给 core/border/noise。</div>
+            <div class="step"><strong>Set threshold:</strong> 用分位数、业务成本或验证集决定 cutoff。</div>
+            <div class="step"><strong>Validate:</strong> 如果有标签，看 precision/recall；如果没有标签，人工检查 top anomalies，并回到业务场景判断是否合理。</div>
+          </div>
+          <div class="callout">
+            <strong>Scenario answer template:</strong>
+            Goal -> Data -> Preprocessing -> Method -> Interpretation -> Validation -> Decision -> Limitations.
+          </div>
+        </div>
+      </section>
+
+      <section id="slides">
+        <h2>Original Slide Visuals</h2>
+        <div class="grid two">
+          <figure class="figure">
+            <img src="anomaly_detection_assets/slide-03.png" alt="Slide showing anomalies in time series and scatter plot">
+            <figcaption>Slide 3: 异常可以是时间序列中的尖峰，也可以是散点图中远离主群体的点。</figcaption>
+          </figure>
+          <figure class="figure">
+            <img src="anomaly_detection_assets/slide-22.png" alt="KNN anomaly score and percentile threshold slide">
+            <figcaption>Slide 22: KNN anomaly score = 平均近邻距离；高分表示更孤立。</figcaption>
+          </figure>
+          <figure class="figure">
+            <img src="anomaly_detection_assets/slide-26.png" alt="Anomaly score histogram with 95th percentile threshold">
+            <figcaption>Slide 26: 分数分布通常右偏，95th percentile 是常见阈值思路。</figcaption>
+          </figure>
+          <figure class="figure">
+            <img src="anomaly_detection_assets/slide-39.png" alt="DBSCAN and K-means comparison on cluster shapes">
+            <figcaption>Slide 39: DBSCAN 比 K-means 更适合非圆形、不规则形状簇。</figcaption>
+          </figure>
+          <figure class="figure">
+            <img src="anomaly_detection_assets/slide-44.png" alt="DBSCAN core border and outlier points">
+            <figcaption>Slide 44: core、border、noise/outlier 是 DBSCAN 的核心分类。</figcaption>
+          </figure>
+          <figure class="figure">
+            <img src="anomaly_detection_assets/slide-48.png" alt="DBSCAN class example with core border and noise labels">
+            <figcaption>Slide 48: 课堂例题中 P2、P5、P11 是 core，P9 是 noise，其余相关点是 border。</figcaption>
+          </figure>
+          <figure class="figure">
+            <img src="anomaly_detection_assets/slide-52.png" alt="DBSCAN final clusters in class example">
+            <figcaption>Slide 52: DBSCAN 从 unvisited core point 扩展，形成两个 dense clusters。</figcaption>
+          </figure>
+          <figure class="figure">
+            <img src="anomaly_detection_assets/slide-60.png" alt="DBSCAN k-distance plot interpretation">
+            <figcaption>Slide 60: k-distance plot 的 elbow/knee 用来选择 eps。</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="coverage">
+        <h2>Slide Coverage Check</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Slides</th>
+                <th>Class content</th>
+                <th>Where covered here</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1-5</td>
+                <td>Topic intro, what an anomaly is, and causes: data errors, rare events, system malfunctions.</td>
+                <td>Core concept overview and definition callout.</td>
+              </tr>
+              <tr>
+                <td>6-12</td>
+                <td>Machine learning framing; supervised vs. unsupervised anomaly detection.</td>
+                <td>Learning setups section, plus supervised KNN discussion.</td>
+              </tr>
+              <tr>
+                <td>13-18</td>
+                <td>Similarity, Euclidean distance, KNN algorithm, majority voting, K and distance function.</td>
+                <td>Distance formula section and KNN classifier algorithm card.</td>
+              </tr>
+              <tr>
+                <td>19-29</td>
+                <td>Unsupervised KNN anomaly score, percentile thresholding, skewed score distribution, choosing K.</td>
+                <td>KNN anomaly score formula, threshold notes, and K parameter section.</td>
+              </tr>
+              <tr>
+                <td>30-37</td>
+                <td>K-means clustering steps and visual comparison with non-round cluster shapes.</td>
+                <td>K-means algorithm card and method selection table.</td>
+              </tr>
+              <tr>
+                <td>38-44</td>
+                <td>DBSCAN overview, advantages, density intuition, eps, MinPts, core, border, noise.</td>
+                <td>DBSCAN formula card, point-type explanations, and original slide visuals.</td>
+              </tr>
+              <tr>
+                <td>45-52</td>
+                <td>DBSCAN worked example with eps = 1.9, MinPts = 4, point labels, and cluster expansion.</td>
+                <td>DBSCAN worked example section and added slide 48 / slide 52 visuals.</td>
+              </tr>
+              <tr>
+                <td>53-55</td>
+                <td>High dimensionality: fixed eps neighborhoods become sparse; MinPts guideline increases with dimension.</td>
+                <td>MinPts parameter card and high-dimensional warning in method selection.</td>
+              </tr>
+              <tr>
+                <td>56-61</td>
+                <td>k-distance graph for selecting eps; flat region, knee, steep noise region.</td>
+                <td>eps parameter formula, k-distance explanation, and slide 60 visual.</td>
+              </tr>
+              <tr>
+                <td>62</td>
+                <td>Thank-you slide.</td>
+                <td>No testable concept; intentionally omitted from study content.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="practice">
+        <h2>Practice Q&amp;A</h2>
+        <div class="qa">
+          <details open>
+            <summary>1. What is anomaly detection?</summary>
+            <p>It is the task of identifying observations that significantly deviate from expected or normal behavior. 中文答法：异常检测就是找“和正常数据模式差很多”的样本。</p>
+          </details>
+          <details>
+            <summary>2. Why is anomaly detection often unsupervised?</summary>
+            <p>Because labeled anomalies are usually rare, expensive to obtain, or incomplete. Most datasets contain many normal points and only a few unknown anomalies.</p>
+          </details>
+          <details>
+            <summary>3. In KNN anomaly detection, what does a large score mean?</summary>
+            <p>A large score means the point is far from its nearest neighbors, so it is relatively isolated and more likely to be anomalous.</p>
+          </details>
+          <details>
+            <summary>4. Why does DBSCAN not need K, the number of clusters?</summary>
+            <p>DBSCAN defines clusters by density using eps and MinPts. Clusters grow from core points, so the number of clusters emerges from the data.</p>
+          </details>
+          <details>
+            <summary>5. What are core, border, and noise points?</summary>
+            <p>Core points have at least MinPts neighbors within eps. Border points have fewer than MinPts neighbors but lie within eps of a core point. Noise points are neither core nor border, so they are treated as outliers.</p>
+          </details>
+          <details>
+            <summary>6. A dataset has crescent-shaped clusters and scattered noise. Which method fits best?</summary>
+            <p>DBSCAN, because it can find irregularly shaped dense regions and label sparse points as noise.</p>
+          </details>
+          <details>
+            <summary>7. In the DBSCAN class example, which points are core and which point remains noise?</summary>
+            <p>With eps = 1.9 and MinPts = 4, P2, P5, and P11 are core points. P9 remains noise. The other listed points are border points attached to nearby core points.</p>
+          </details>
+        </div>
+      </section>
+
+      <section id="cheatsheet">
+        <h2>Cheat Sheet</h2>
+        <div class="grid three">
+          <div class="cheat">
+            <h3>Definitions</h3>
+            <ul>
+              <li><strong>Anomaly:</strong> significantly deviates from normal behavior.</li>
+              <li><strong>Similarity:</strong> numerical measure of how alike two data objects are.</li>
+              <li><strong>Distance:</strong> lower means more similar, higher means more different.</li>
+            </ul>
+          </div>
+          <div class="cheat">
+            <h3>Algorithms</h3>
+            <ul>
+              <li><strong>KNN classifier:</strong> labeled data, majority vote.</li>
+              <li><strong>KNN score:</strong> average distance to k nearest neighbors.</li>
+              <li><strong>K-means:</strong> centroid assignment and update.</li>
+              <li><strong>DBSCAN:</strong> density clusters plus noise points.</li>
+            </ul>
+          </div>
+          <div class="cheat">
+            <h3>Common Mistakes</h3>
+            <ul>
+              <li>忘记 scale features，导致距离不公平。</li>
+              <li>把所有 outlier 都当错误；有些是重要 rare events。</li>
+              <li>DBSCAN 在高维直接套用，不考虑稀疏性。</li>
+              <li>只给 anomaly labels，不解释阈值或业务成本。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <p class="footer-note">Built from 7_Anomaly_Detection.pdf for CSCI 185 review.</p>
+    </main>
+  </div>
+</body>
+</html>
