@@ -7,6 +7,7 @@ Open `index.html` locally, or publish this folder as a GitHub repository and ena
 Additional study guides:
 
 - [Anomaly Detection Exam Prep](anomaly-detection/)
+- [Link Analysis and PageRank Exam Prep](link-analysis/)
 
 Suggested repository name:
 

@@ -1,0 +1,1176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Link Analysis and PageRank Exam Prep</title>
+  <style>
+    :root {
+      --ink: #17202a;
+      --muted: #5d6875;
+      --line: #dfe5e9;
+      --paper: #f7f9fb;
+      --panel: #ffffff;
+      --red: #9f1239;
+      --red-dark: #6f1029;
+      --teal: #0f766e;
+      --green: #2f6f4e;
+      --gold: #a16207;
+      --blue: #2563eb;
+      --shadow: 0 18px 50px rgba(23, 32, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.62;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      color: #fff;
+      background: #111827;
+      overflow: auto;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .brand {
+      display: grid;
+      gap: 6px;
+      padding-bottom: 22px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .brand strong {
+      font-size: 1.05rem;
+      letter-spacing: 0;
+    }
+
+    .brand span {
+      color: #cbd5e1;
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
+
+    nav {
+      display: grid;
+      gap: 6px;
+    }
+
+    nav a {
+      display: block;
+      padding: 9px 10px;
+      border-radius: 7px;
+      color: #dbeafe;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    nav a:hover,
+    nav a:focus {
+      background: rgba(255, 255, 255, 0.1);
+      outline: none;
+    }
+
+    main {
+      min-width: 0;
+    }
+
+    .hero {
+      color: #fff;
+      background:
+        linear-gradient(105deg, rgba(17, 24, 39, 0.96) 0%, rgba(17, 24, 39, 0.86) 42%, rgba(159, 18, 57, 0.66) 100%),
+        url("link_analysis_assets/link-graph-hero.svg") center / cover;
+      min-height: 440px;
+      display: grid;
+      align-items: end;
+      padding: 64px clamp(22px, 6vw, 76px) 42px;
+      border-bottom: 7px solid var(--teal);
+    }
+
+    .hero-inner {
+      max-width: 980px;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      color: #bae6fd;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.8rem;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 920px;
+      font-size: clamp(2.25rem, 5.25vw, 4.75rem);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      margin: 22px 0 0;
+      max-width: 850px;
+      color: #f8fafc;
+      font-size: clamp(1.05rem, 2.1vw, 1.36rem);
+    }
+
+    .source-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .source-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+      font-size: 0.88rem;
+    }
+
+    .content {
+      width: min(1120px, calc(100% - 44px));
+      margin: 0 auto;
+      padding: 38px 0 70px;
+    }
+
+    section {
+      padding: 36px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    section:last-child {
+      border-bottom: 0;
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      color: var(--red-dark);
+      font-size: clamp(1.65rem, 2.8vw, 2.35rem);
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 26px 0 10px;
+      color: #111827;
+      font-size: 1.24rem;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    p,
+    li {
+      font-size: 1rem;
+    }
+
+    .lead {
+      color: #334155;
+      font-size: 1.12rem;
+    }
+
+    .cn-below,
+    .cn-line,
+    .cn-table,
+    .caption-cn {
+      color: #475569;
+      line-height: 1.6;
+    }
+
+    .cn-below {
+      display: block;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed #d7e0e8;
+      font-size: 0.95rem;
+    }
+
+    .cn-line,
+    .cn-table,
+    .caption-cn {
+      display: block;
+      margin-top: 5px;
+      font-size: 0.93rem;
+    }
+
+    .cn-prefix {
+      color: var(--red-dark);
+      font-weight: 850;
+    }
+
+    .hero .cn-prefix {
+      color: #bae6fd;
+    }
+
+    .compare-table th .cn-table {
+      color: #cbd5e1;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .triple {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .panel,
+    .math-card,
+    .answer-box,
+    .warning,
+    .quote-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel,
+    .answer-box,
+    .warning,
+    .quote-card {
+      padding: 20px;
+    }
+
+    .panel h3,
+    .answer-box h3 {
+      margin-top: 0;
+    }
+
+    .label {
+      display: inline-block;
+      margin-bottom: 4px;
+      color: #fff;
+      border-radius: 999px;
+      padding: 3px 9px;
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .cn-label {
+      background: var(--red);
+    }
+
+    .en-label {
+      background: var(--teal);
+    }
+
+    .tag {
+      display: inline-block;
+      margin: 3px 5px 3px 0;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid #cbd5e1;
+      color: #334155;
+      background: #f8fafc;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .math-card {
+      padding: 22px;
+      margin: 18px 0;
+      overflow-x: auto;
+    }
+
+    .math-title {
+      margin: 0 0 10px;
+      color: var(--red-dark);
+      font-weight: 850;
+    }
+
+    .math-expression {
+      min-width: 360px;
+      padding: 18px;
+      border-radius: 8px;
+      color: #111827;
+      background: #f1f5f9;
+      font-family: "Times New Roman", Times, serif;
+      font-size: clamp(1.3rem, 3.2vw, 2rem);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .math-expression small {
+      font-size: 0.65em;
+    }
+
+    .math-note {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .symbol-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 18px;
+      padding: 0;
+      margin: 16px 0 0;
+      list-style: none;
+    }
+
+    .symbol-list li {
+      padding-left: 12px;
+      border-left: 4px solid var(--teal);
+      color: #334155;
+    }
+
+    .steps {
+      counter-reset: step;
+      display: grid;
+      gap: 12px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .steps li {
+      counter-increment: step;
+      position: relative;
+      padding: 16px 18px 16px 58px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .steps li::before {
+      content: counter(step);
+      position: absolute;
+      top: 15px;
+      left: 16px;
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      color: #fff;
+      background: var(--teal);
+      font-size: 0.85rem;
+      font-weight: 850;
+    }
+
+    .diagram {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    figure {
+      margin: 0;
+    }
+
+    figcaption {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .slide-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .slide-grid img,
+    .wide-slide img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .wide-slide {
+      margin: 18px 0;
+    }
+
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .compare-table th,
+    .compare-table td {
+      padding: 13px 14px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .compare-table th {
+      color: #fff;
+      background: #111827;
+      font-size: 0.92rem;
+    }
+
+    .compare-table td:first-child {
+      font-weight: 800;
+      color: var(--red-dark);
+      width: 22%;
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    details + details {
+      margin-top: 10px;
+    }
+
+    summary {
+      cursor: pointer;
+      padding: 15px 18px;
+      font-weight: 800;
+      color: #111827;
+    }
+
+    details div {
+      padding: 0 18px 18px;
+      color: #334155;
+    }
+
+    .cheat {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .cheat p {
+      margin: 0;
+      padding: 15px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--gold);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .formula-key {
+      color: var(--red-dark);
+      font-weight: 850;
+    }
+
+    .warning {
+      border-left: 5px solid var(--red);
+    }
+
+    .quote-card {
+      border-left: 5px solid var(--teal);
+    }
+
+    @media (max-width: 980px) {
+      .layout {
+        display: block;
+      }
+
+      aside {
+        position: relative;
+        height: auto;
+        padding: 18px;
+      }
+
+      nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .hero {
+        min-height: 430px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .content {
+        width: min(100% - 28px, 1120px);
+      }
+
+      .grid,
+      .triple,
+      .slide-grid,
+      .cheat,
+      .symbol-list {
+        grid-template-columns: 1fr;
+      }
+
+      nav {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 54px 18px 36px;
+      }
+
+      .math-expression {
+        min-width: 0;
+        font-size: 1.16rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside>
+      <div class="brand">
+        <strong>Link Analysis</strong>
+        <span>CSCI 185 study guide from 8A Link Analysis and 8B PageRank Extension.</span>
+        <span>中文：CSCI 185 关于 Link Analysis 和 PageRank 的复习指南。</span>
+      </div>
+      <nav aria-label="Study guide navigation">
+        <a href="#overview">Overview / 总览</a>
+        <a href="#concept-map">Concept Map / 概念图</a>
+        <a href="#link-analysis">Link Analysis / 链接分析</a>
+        <a href="#pagerank">PR Algorithm / PR算法</a>
+        <a href="#modified">Modified PR / 改进PR</a>
+        <a href="#damping">Damping Factor / 阻尼因子</a>
+        <a href="#sinks">Sinks / 汇点</a>
+        <a href="#search">Search Ranking / 搜索排名</a>
+        <a href="#example">Worked Example / 例题</a>
+        <a href="#slides">Slide Visuals / 原始图</a>
+        <a href="#practice">Practice Q&amp;A / 练习</a>
+        <a href="#cheat-sheet">Cheat Sheet / 速记</a>
+      </nav>
+    </aside>
+
+    <main>
+      <header class="hero">
+        <div class="hero-inner">
+          <p class="eyebrow">Data Mining - Link Analysis</p>
+          <h1>Link Analysis and PageRank</h1>
+          <p>Exam-ready explanation of link analysis, the PageRank algorithm, modified PageRank, damping factor, and why teleportation matters.</p>
+          <p><span class="cn-prefix">中文：</span>这是一份考试复习版笔记，讲清楚链接分析、PageRank、改进版 PageRank、damping factor，以及为什么 teleportation 很重要。</p>
+          <div class="source-row" aria-label="Sources">
+            <span class="source-pill">8A Link Analysis - 32 slides / 32页</span>
+            <span class="source-pill">8B PageRank Extension - 24 slides / 24页</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="content">
+        <section id="overview">
+          <h2>Overview / 总览</h2>
+          <p class="lead"><strong>Exam core idea:</strong> Link analysis treats documents, people, or pages as nodes in a graph. PageRank assigns each node an importance score by letting important pages pass rank through their outgoing links. Modified PageRank adds teleportation and sink handling so the score is stable, normalized, and not trapped.</p>
+          <p class="cn-below"><span class="cn-prefix">中文：</span>核心考点是：把网页、人、论文等对象看成图里的节点，把它们之间的连接看成边。PageRank 让重要节点通过出边传递分数；改进版 PageRank 加入随机跳转和 sink 处理，让分数稳定、总和保持为 1，并且不会卡住。</p>
+          <div class="grid">
+            <div class="panel">
+              <h3>中文理解</h3>
+              <p>把网页看成一个有向图：网页是点，超链接是箭头。一个网页被很多重要网页指向，就更重要。PageRank 不是只数入边数量，而是问："给你投票的网页本身有多重要？它把票分给了多少网页？"</p>
+            </div>
+            <div class="panel">
+              <h3>English Exam Phrase</h3>
+              <p>Link analysis evaluates relationships among nodes in a graph. PageRank is a query-independent authority score that ranks pages using the number and quality of incoming links, with each linking page splitting its importance across its outbound links.</p>
+              <p class="cn-below"><span class="cn-prefix">中文：</span>Link analysis 分析图中节点之间的关系。PageRank 是一种不依赖查询内容的权威性分数，它用入链的数量和质量给网页排名，并且每个链接来源会把自己的重要性分给它的出链。</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="concept-map">
+          <h2>Concept Map / 概念地图</h2>
+          <div class="triple">
+            <div class="panel">
+              <h3>Graph View / 图结构视角</h3>
+              <p><span class="tag">Node</span> webpage, user, paper, account</p>
+              <p class="cn-line"><span class="cn-prefix">中文：</span>Node 是图里的点，可以代表网页、用户、论文或账号。</p>
+              <p><span class="tag">Directed edge</span> hyperlink, follow, citation</p>
+              <p class="cn-line"><span class="cn-prefix">中文：</span>Directed edge 是有方向的边，比如超链接、关注关系、引用关系。</p>
+              <p><span class="tag">Authority</span> how important or trustworthy a node is</p>
+              <p class="cn-line"><span class="cn-prefix">中文：</span>Authority 表示一个节点有多重要、多可信。</p>
+            </div>
+            <div class="panel">
+              <h3>Ranking View / 排名视角</h3>
+              <p><span class="tag">In-degree</span> number of incoming links</p>
+              <p class="cn-line"><span class="cn-prefix">中文：</span>In-degree 是指向某个节点的边的数量。</p>
+              <p><span class="tag">PageRank</span> weighted importance from important neighbors</p>
+              <p class="cn-line"><span class="cn-prefix">中文：</span>PageRank 是来自重要邻居节点的加权重要性。</p>
+              <p><span class="tag">Convergence</span> repeat updates until scores stabilize</p>
+              <p class="cn-line"><span class="cn-prefix">中文：</span>Convergence 是反复更新直到分数基本不再变化。</p>
+            </div>
+            <div class="panel">
+              <h3>Random Surfer View / 随机浏览者视角</h3>
+              <p><span class="tag">Follow link</span> probability <strong>d</strong></p>
+              <p class="cn-line"><span class="cn-prefix">中文：</span>以概率 d 继续点击当前页面上的链接。</p>
+              <p><span class="tag">Teleport</span> probability <strong>1 - d</strong></p>
+              <p class="cn-line"><span class="cn-prefix">中文：</span>以概率 1 - d 随机跳到任意页面。</p>
+              <p><span class="tag">Sink</span> page with no outgoing links</p>
+              <p class="cn-line"><span class="cn-prefix">中文：</span>Sink 是没有出链的页面，分数容易停在那里。</p>
+            </div>
+          </div>
+          <h3>Visual Intuition / 图示直觉</h3>
+          <svg class="diagram" viewBox="0 0 1040 360" role="img" aria-labelledby="diagram-title diagram-desc">
+            <title id="diagram-title">Directed graph intuition for PageRank</title>
+            <desc id="diagram-desc">Important pages pass authority through outgoing links. Teleportation keeps probability moving across the graph.</desc>
+            <defs>
+              <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+                <path d="M2,2 L10,6 L2,10 Z" fill="#475569"></path>
+              </marker>
+              <marker id="arrow-red" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+                <path d="M2,2 L10,6 L2,10 Z" fill="#9f1239"></path>
+              </marker>
+            </defs>
+            <rect x="0" y="0" width="1040" height="360" fill="#fff"></rect>
+            <text x="50" y="52" font-size="24" font-weight="800" fill="#111827">Links as endorsements</text>
+            <text x="50" y="82" font-size="15" fill="#64748b">A link from p to q means p is voting for q, but p must split its vote among all outgoing links.</text>
+            <circle cx="190" cy="190" r="58" fill="#dbeafe" stroke="#2563eb" stroke-width="3"></circle>
+            <text x="172" y="199" font-size="28" font-weight="800" fill="#1e3a8a">p</text>
+            <circle cx="430" cy="105" r="52" fill="#dcfce7" stroke="#2f6f4e" stroke-width="3"></circle>
+            <text x="412" y="114" font-size="26" font-weight="800" fill="#14532d">q1</text>
+            <circle cx="430" cy="270" r="52" fill="#fef3c7" stroke="#a16207" stroke-width="3"></circle>
+            <text x="412" y="279" font-size="26" font-weight="800" fill="#713f12">q2</text>
+            <line x1="247" y1="174" x2="374" y2="124" stroke="#475569" stroke-width="4" marker-end="url(#arrow)"></line>
+            <line x1="247" y1="206" x2="374" y2="250" stroke="#475569" stroke-width="4" marker-end="url(#arrow)"></line>
+            <text x="277" y="152" font-size="17" fill="#334155">PR(p) / out(p)</text>
+            <text x="277" y="235" font-size="17" fill="#334155">PR(p) / out(p)</text>
+            <circle cx="700" cy="188" r="62" fill="#fce7f3" stroke="#9f1239" stroke-width="3"></circle>
+            <text x="657" y="198" font-size="25" font-weight="800" fill="#831843">target</text>
+            <path d="M485 104 C570 98, 600 130, 646 165" fill="none" stroke="#9f1239" stroke-width="4" marker-end="url(#arrow-red)"></path>
+            <path d="M484 270 C572 272, 610 230, 647 205" fill="none" stroke="#9f1239" stroke-width="4" marker-end="url(#arrow-red)"></path>
+            <text x="585" y="94" font-size="16" fill="#831843">rank flows through links</text>
+            <rect x="820" y="108" width="150" height="160" rx="8" fill="#f8fafc" stroke="#cbd5e1"></rect>
+            <text x="850" y="150" font-size="20" font-weight="800" fill="#111827">Teleport</text>
+            <text x="846" y="184" font-size="18" fill="#334155">with 1 - d</text>
+            <text x="845" y="218" font-size="16" fill="#64748b">jump to any</text>
+            <text x="860" y="242" font-size="16" fill="#64748b">page uniformly</text>
+            <path d="M795 186 C765 130, 730 88, 673 84" fill="none" stroke="#0f766e" stroke-width="4" stroke-dasharray="9 8" marker-end="url(#arrow)"></path>
+          </svg>
+          <p class="cn-below"><span class="cn-prefix">中文：</span>这张图的意思是：链接像投票，p 指向 q 就是在给 q 投票；但如果 p 有多条出链，p 的 PageRank 要平均分给这些目标。Teleport 表示用户不再沿着链接走，而是随机跳到别的页面。</p>
+        </section>
+
+        <section id="link-analysis">
+          <h2>What Is Link Analysis? / 什么是链接分析？</h2>
+          <div class="grid">
+            <div class="answer-box">
+              <h3>Definition / 定义</h3>
+              <p><span class="label cn-label">中文理解</span><br>Link Analysis 是一种分析网络关系的方法。它研究节点之间的连接，比如网页之间的超链接、社交网络里的关注关系、论文之间的引用关系，从而发现重要节点、群体结构、隐藏关系。</p>
+              <p><span class="label en-label">English answer</span><br>Link analysis is a data-analysis technique that evaluates relationships between nodes in a graph to identify patterns, measure importance, and uncover hidden connections.</p>
+              <p class="cn-below"><span class="cn-prefix">中文：</span>考试回答时可以说：Link Analysis 用图结构中的连接关系来找模式、衡量重要性、发现隐藏关系。</p>
+            </div>
+            <div class="answer-box">
+              <h3>Why Links Matter / 为什么链接重要</h3>
+              <p>A hyperlink is a quality signal. If page <strong>d1</strong> links to page <strong>d2</strong>, the author of <strong>d1</strong> is implicitly saying that <strong>d2</strong> is relevant, useful, or authoritative.</p>
+              <p class="cn-below"><span class="cn-prefix">中文：</span>超链接可以看作质量信号。如果 d1 链接到 d2，就表示 d1 的作者认为 d2 有相关性、有用或有权威性。</p>
+              <p>Important caution: a raw count of incoming links can be manipulated, so PageRank also considers the importance of the pages that link to you.</p>
+              <p class="cn-below"><span class="cn-prefix">中文：</span>注意：只数入链数量很容易被操纵，所以 PageRank 不只看有多少网页链接你，还看链接你的网页本身有多重要。</p>
+            </div>
+          </div>
+          <div class="wide-slide">
+            <figure>
+              <img src="link_analysis_assets/8a-slide-12.png" alt="Slide explaining that the World Wide Web is a directed graph of documents and hyperlinks.">
+              <figcaption>Slide takeaway: the web can be modeled as a directed graph, and hyperlinks act as quality signals.</figcaption>
+              <figcaption class="caption-cn"><span class="cn-prefix">中文：</span>这页的重点是：Web 可以被建模成有向图，超链接就是网页之间的质量/推荐信号。</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section id="pagerank">
+          <h2>What Is the PR Algorithm? / 什么是 PR 算法？</h2>
+          <p class="lead">PR means PageRank. It assigns an importance score to every page. The score is query-independent: it measures static authority from the link graph, not whether the page matches a particular search query.</p>
+          <p class="cn-below"><span class="cn-prefix">中文：</span>PR 就是 PageRank。它给每个网页一个重要性分数。这个分数和用户具体搜什么无关，只衡量网页在链接图里的静态权威性。</p>
+          <div class="math-card">
+            <p class="math-title">Simplified PageRank update rule / 简化版 PageRank 更新规则</p>
+            <div class="math-expression">
+              PR(u) = &Sigma;<sub>v &isin; In(u)</sub> PR(v) / Out(v)
+            </div>
+            <p class="math-note">A page u receives rank from every incoming page v. Each v divides its old rank equally among the pages it links to.</p>
+            <p class="cn-below"><span class="cn-prefix">中文：</span>页面 u 的新分数来自所有指向它的页面 v。每个 v 会把自己上一轮的分数平均分给它链接出去的页面。</p>
+          </div>
+          <ul class="symbol-list">
+            <li><strong>PR(u):</strong> importance score of page u.<span class="cn-line"><span class="cn-prefix">中文：</span>页面 u 的重要性分数。</span></li>
+            <li><strong>In(u):</strong> set of pages that link to u.<span class="cn-line"><span class="cn-prefix">中文：</span>所有指向 u 的页面集合。</span></li>
+            <li><strong>Out(v):</strong> number of outgoing links from page v.<span class="cn-line"><span class="cn-prefix">中文：</span>页面 v 指出去的链接数量。</span></li>
+            <li><strong>N:</strong> total number of pages.<span class="cn-line"><span class="cn-prefix">中文：</span>总页面数。</span></li>
+          </ul>
+          <h3>Algorithm Steps / 算法步骤</h3>
+          <ol class="steps">
+            <li>Initialize each page with rank <strong>1 / N</strong>, so the total rank over all pages is 1.<span class="cn-line"><span class="cn-prefix">中文：</span>一开始每个页面分数都是 1 / N，保证所有页面分数加起来等于 1。</span></li>
+            <li>For every page u, compute a new rank from the previous iteration: add up <strong>PR(v) / Out(v)</strong> for every page v that points to u.<span class="cn-line"><span class="cn-prefix">中文：</span>对每个页面 u，把所有指向 u 的页面 v 的贡献加起来：每个贡献是 PR(v) 除以 v 的出链数量。</span></li>
+            <li>Repeat the update until the ranks stop changing much. This is convergence.<span class="cn-line"><span class="cn-prefix">中文：</span>不断重复更新，直到分数变化很小，这叫收敛。</span></li>
+            <li>Sort pages by final PageRank. Higher PageRank means higher link-based authority.<span class="cn-line"><span class="cn-prefix">中文：</span>最后按 PageRank 从高到低排序，分数越高表示链接结构里的权威性越高。</span></li>
+          </ol>
+          <div class="grid">
+            <div class="quote-card">
+              <h3>中文理解</h3>
+              <p>普通 PageRank 就像不断传递"重要性的钱"。每个网页把自己的分数平均分给它链接出去的网页。收到越多来自重要网页的分数，你的 PageRank 越高。</p>
+            </div>
+            <div class="quote-card">
+              <h3>English Exam Phrase / 英文考试句</h3>
+              <p>PageRank recursively defines a page's importance as the sum of the importance contributed by its incoming neighbors, where each neighbor splits its rank among its outbound links.</p>
+              <p class="cn-below"><span class="cn-prefix">中文：</span>PageRank 递归地定义重要性：一个页面的重要性来自指向它的邻居页面，而每个邻居会把自己的分数分给所有出链。</p>
+            </div>
+          </div>
+          <div class="slide-grid">
+            <figure>
+              <img src="link_analysis_assets/8a-slide-20.png" alt="Slide defining PageRank algorithm.">
+              <figcaption>PageRank counts both the number and quality of links.</figcaption>
+              <figcaption class="caption-cn"><span class="cn-prefix">中文：</span>PageRank 同时考虑链接数量和链接质量。</figcaption>
+            </figure>
+            <figure>
+              <img src="link_analysis_assets/8a-slide-24.png" alt="Slide showing all PageRank scores sum to 1.">
+              <figcaption>PageRank is a probability distribution: scores are between 0 and 1 and sum to 1.</figcaption>
+              <figcaption class="caption-cn"><span class="cn-prefix">中文：</span>PageRank 可以看成概率分布：每个分数在 0 到 1 之间，所有分数总和为 1。</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section id="modified">
+          <h2>What Is the Modified PR Algorithm? / 什么是改进版 PR 算法？</h2>
+          <p class="lead">The modified algorithm fixes a major weakness of simplified PageRank: a random surfer can get trapped in disconnected components or lose probability mass at pages with no outgoing links. Modified PageRank adds teleportation.</p>
+          <p class="cn-below"><span class="cn-prefix">中文：</span>改进版 PageRank 修复普通 PageRank 的问题：随机浏览者可能被困在不连通的部分，或者遇到没有出链的页面导致分数流失。改进版加入 teleportation，也就是随机跳转。</p>
+          <div class="math-card">
+            <p class="math-title">Modified PageRank with teleportation / 带随机跳转的改进版 PageRank</p>
+            <div class="math-expression">
+              PR(p<sub>i</sub>) = (1 - d) / N + d &middot; &Sigma;<sub>p<sub>j</sub> &isin; In(p<sub>i</sub>)</sub> PR(p<sub>j</sub>) / |Out(p<sub>j</sub>)|
+            </div>
+            <p class="math-note">The first term gives every page a small base probability from teleportation. The second term gives rank from incoming links when the surfer follows a link.</p>
+            <p class="cn-below"><span class="cn-prefix">中文：</span>第一项 (1 - d) / N 是每个页面都会得到的随机跳转基础分。第二项是用户按链接走时，从入链页面传来的 PageRank。</p>
+          </div>
+          <ul class="symbol-list">
+            <li><strong>p1, p2, ..., pn:</strong> all pages considered.<span class="cn-line"><span class="cn-prefix">中文：</span>当前图中所有被考虑的页面。</span></li>
+            <li><strong>In(pi):</strong> pages that link to pi.<span class="cn-line"><span class="cn-prefix">中文：</span>所有指向 pi 的页面。</span></li>
+            <li><strong>|Out(pj)|:</strong> number of outbound links from pj.<span class="cn-line"><span class="cn-prefix">中文：</span>pj 的出链数量。</span></li>
+            <li><strong>d:</strong> damping factor, the probability of following a link.<span class="cn-line"><span class="cn-prefix">中文：</span>阻尼因子，表示继续点击链接的概率。</span></li>
+            <li><strong>1 - d:</strong> probability of teleporting uniformly to any page.<span class="cn-line"><span class="cn-prefix">中文：</span>随机跳到任意页面的概率。</span></li>
+            <li><strong>N:</strong> total number of pages, used to distribute teleport probability uniformly.<span class="cn-line"><span class="cn-prefix">中文：</span>页面总数，用来平均分配随机跳转概率。</span></li>
+          </ul>
+          <h3>Modified Algorithm Steps / 改进版算法步骤</h3>
+          <ol class="steps">
+            <li>Initialize every page to <strong>1 / N</strong>.<span class="cn-line"><span class="cn-prefix">中文：</span>每个页面初始分数设为 1 / N。</span></li>
+            <li>Choose a damping factor, usually <strong>d = 0.85</strong>.<span class="cn-line"><span class="cn-prefix">中文：</span>选择阻尼因子，常见取值是 d = 0.85。</span></li>
+            <li>For each page, add the teleportation term <strong>(1 - d) / N</strong>.<span class="cn-line"><span class="cn-prefix">中文：</span>每个页面先加上随机跳转带来的基础分。</span></li>
+            <li>Add the link-following contribution from incoming neighbors, multiplied by <strong>d</strong>.<span class="cn-line"><span class="cn-prefix">中文：</span>再加上入链页面传来的分数，并乘以 d。</span></li>
+            <li>Repeat until convergence.<span class="cn-line"><span class="cn-prefix">中文：</span>重复计算直到分数稳定。</span></li>
+          </ol>
+          <div class="slide-grid">
+            <figure>
+              <img src="link_analysis_assets/8b-slide-09.png" alt="Slide defining teleportation and damping factor.">
+              <figcaption>Modified PageRank: follow links with probability d, teleport with probability 1 - d.</figcaption>
+              <figcaption class="caption-cn"><span class="cn-prefix">中文：</span>改进版 PageRank：以概率 d 继续走链接，以概率 1 - d 随机跳转。</figcaption>
+            </figure>
+            <figure>
+              <img src="link_analysis_assets/8b-slide-12.png" alt="Slide showing modified PageRank formula.">
+              <figcaption>The formula combines teleportation and link-based rank flow.</figcaption>
+              <figcaption class="caption-cn"><span class="cn-prefix">中文：</span>这个公式把随机跳转和沿链接传递 PageRank 合在一起。</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section id="damping">
+          <h2>What Is Damping Factor? / 什么是阻尼因子？</h2>
+          <div class="grid">
+            <div class="answer-box">
+              <h3>Definition / 定义</h3>
+              <p><span class="label cn-label">中文理解</span><br>Damping factor 记作 <strong>d</strong>，表示随机浏览者继续点击当前页面链接的概率。<strong>1 - d</strong> 表示他不再沿着链接走，而是随机跳到任意一个网页。</p>
+              <p><span class="label en-label">English answer</span><br>The damping factor is the probability that the random surfer follows an outgoing link instead of teleporting to a random page. In PageRank, it controls the balance between link structure and random exploration.</p>
+              <p class="cn-below"><span class="cn-prefix">中文：</span>一句话记：d 控制“相信链接结构”的程度；1 - d 控制“随机探索”的程度。</p>
+            </div>
+            <div class="answer-box">
+              <h3>Typical Value / 常用取值</h3>
+              <p>Most PageRank explanations use <strong>d = 0.85</strong>. That means a surfer follows a link 85% of the time and teleports 15% of the time.</p>
+              <p class="cn-below"><span class="cn-prefix">中文：</span>常用 d = 0.85，意思是 85% 的时候继续点链接，15% 的时候随机跳到其他页面。</p>
+              <p class="small">Using the slide convention, expected steps until teleport are <strong>1 / (1 - d)</strong>. For d = 0.85, this is <strong>1 / 0.15 = 6.67</strong>, matching the idea that users follow about 6-7 links before jumping away.</p>
+              <p class="cn-below"><span class="cn-prefix">中文：</span>按照课件里的解释，随机跳转前的期望步数是 1 / (1 - d)。当 d = 0.85 时，期望约为 6.67，接近用户平均点 6 到 7 个链接后离开的行为。</p>
+            </div>
+          </div>
+
+          <div class="math-card">
+            <p class="math-title">Geometric intuition for d = 0.85 / d = 0.85 的几何分布直觉</p>
+            <div class="math-expression">
+              E[X] = 1 / p = 1 / (1 - d) = 1 / 0.15 &asymp; 6.67
+            </div>
+            <p class="math-note">Here "success" means teleporting. Larger d means longer link-following chains. Smaller d means more random jumps and less dependence on link structure.</p>
+            <p class="cn-below"><span class="cn-prefix">中文：</span>这里的“成功”指发生随机跳转。d 越大，用户沿链接走得越久；d 越小，随机跳转越频繁，PageRank 越接近平均分。</p>
+          </div>
+
+          <h3>Why Is Damping Factor Important? / 为什么阻尼因子重要？</h3>
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>Reason<span class="cn-table">中文：原因</span></th>
+                <th>What it means<span class="cn-table">中文：含义</span></th>
+                <th>Exam wording<span class="cn-table">中文：考试表达</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Prevents traps<span class="cn-table">中文：防止被困住</span></td>
+                <td>Without teleportation, rank can get stuck in disconnected components or cycles.<span class="cn-table">中文：如果没有随机跳转，分数可能卡在不连通部分或循环里。</span></td>
+                <td>Damping guarantees the surfer can eventually reach every page.<span class="cn-table">中文：Damping 保证随机浏览者最终有机会到达每个页面。</span></td>
+              </tr>
+              <tr>
+                <td>Helps convergence<span class="cn-table">中文：帮助收敛</span></td>
+                <td>The modified random walk becomes well behaved because every page has a nonzero chance of receiving rank.<span class="cn-table">中文：每个页面都有非零概率收到分数，所以随机游走更稳定。</span></td>
+                <td>Teleportation makes the Markov chain more stable and supports a unique stationary distribution.<span class="cn-table">中文：Teleportation 让 Markov chain 更稳定，并支持唯一稳定分布。</span></td>
+              </tr>
+              <tr>
+                <td>Controls sensitivity<span class="cn-table">中文：控制敏感度</span></td>
+                <td>High d trusts the link graph more. Low d smooths scores toward uniform values.<span class="cn-table">中文：d 高时更相信链接图；d 低时分数更接近平均。</span></td>
+                <td>The damping factor balances link-based authority and random exploration.<span class="cn-table">中文：Damping factor 平衡链接权威性和随机探索。</span></td>
+              </tr>
+              <tr>
+                <td>Models users<span class="cn-table">中文：模拟用户行为</span></td>
+                <td>Real users do not follow links forever; they stop, get distracted, or jump to a new page.<span class="cn-table">中文：真实用户不会永远点链接，会停下、分心或跳到新页面。</span></td>
+                <td>The damping factor approximates realistic browsing behavior.<span class="cn-table">中文：Damping factor 用来近似真实浏览行为。</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="slide-grid">
+            <figure>
+              <img src="link_analysis_assets/8b-slide-22.png" alt="Slide explaining geometric distribution for teleportation.">
+              <figcaption>The class uses a geometric distribution to motivate the value of d.</figcaption>
+              <figcaption class="caption-cn"><span class="cn-prefix">中文：</span>课件用几何分布解释为什么 d 可以取 0.85。</figcaption>
+            </figure>
+            <figure>
+              <img src="link_analysis_assets/8b-slide-23.png" alt="Slide calculating expected path length for d equals 0.85.">
+              <figcaption>With d = 0.85, the expected path length is about 6.67 under the slide convention.</figcaption>
+              <figcaption class="caption-cn"><span class="cn-prefix">中文：</span>d = 0.85 时，随机跳转前的期望路径长度约为 6.67。</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section id="sinks">
+          <h2>Sinks and the Final PageRank Formula / Sink 与最终 PageRank 公式</h2>
+          <p class="lead">A sink, also called a dangling node, is a page with no outgoing links. If we do not handle it, rank can accumulate there and stop flowing through the graph.</p>
+          <p class="cn-below"><span class="cn-prefix">中文：</span>Sink 也叫 dangling node，指没有出链的页面。如果不处理，PageRank 可能流进这个页面后就不再流出，导致分数被吸住。</p>
+          <div class="math-card">
+            <p class="math-title">Dangling-aware PageRank / 处理 dangling node 的 PageRank</p>
+            <div class="math-expression">
+              PR(p<sub>i</sub>) = (1 - d) / N + d ( &Sigma;<sub>p<sub>j</sub> &isin; In(p<sub>i</sub>)</sub> PR(p<sub>j</sub>) / |Out(p<sub>j</sub>)| + &Sigma;<sub>p<sub>k</sub> &isin; D</sub> PR(p<sub>k</sub>) / N )
+            </div>
+            <p class="math-note">D is the set of dangling nodes. Their rank is redistributed evenly to all pages, as if each sink had outgoing links to every page.</p>
+            <p class="cn-below"><span class="cn-prefix">中文：</span>D 是所有 dangling nodes 的集合。它们的分数会平均分给所有页面，效果等价于每个 sink 都连向所有页面。</p>
+          </div>
+          <div class="grid">
+            <div class="panel">
+              <h3>Two Equivalent Fixes / 两种等价修复方法</h3>
+              <p><strong>Method 1:</strong> Add outgoing edges from each sink to every page, including itself, before the main loop.</p>
+              <p class="cn-below"><span class="cn-prefix">中文：</span>方法 1：在主循环开始前，给每个 sink 加上指向所有页面的出边，包括指向它自己。</p>
+              <p><strong>Method 2:</strong> During each update, distribute each sink's PageRank evenly among all N pages.</p>
+              <p class="cn-below"><span class="cn-prefix">中文：</span>方法 2：每次更新时，把 sink 的 PageRank 平均分配给全部 N 个页面。</p>
+            </div>
+            <div class="warning">
+              <h3>Common Mistake / 常见错误</h3>
+              <p>Do not forget sink rank. If a dangling page has rank 0.25 and N = 4, each page receives an extra <strong>0.25 / 4</strong> inside the link-following part of the formula, then the whole link contribution is multiplied by <strong>d</strong>.</p>
+              <p class="cn-below"><span class="cn-prefix">中文：</span>常见错误是忘记 sink 的分数。比如一个 dangling page 的分数是 0.25，N = 4，那么每个页面会额外收到 0.25 / 4，这部分也属于括号里的链接贡献，最后还要乘 d。</p>
+            </div>
+          </div>
+          <div class="slide-grid">
+            <figure>
+              <img src="link_analysis_assets/8b-slide-15.png" alt="Slide explaining sinks in PageRank.">
+              <figcaption>Sinks are pages with no outgoing links and can trap rank.</figcaption>
+              <figcaption class="caption-cn"><span class="cn-prefix">中文：</span>Sink 是没有出链的页面，会让 PageRank 卡住。</figcaption>
+            </figure>
+            <figure>
+              <img src="link_analysis_assets/8b-slide-19.png" alt="Slide showing final PageRank update formula with dangling nodes.">
+              <figcaption>The final formula includes teleportation plus dangling-node redistribution.</figcaption>
+              <figcaption class="caption-cn"><span class="cn-prefix">中文：</span>最终公式同时包含随机跳转和 dangling node 分数重分配。</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section id="search">
+          <h2>How PageRank Fits Search Ranking / PageRank 如何用于搜索排名</h2>
+          <p class="lead">The slides distinguish between relevance and importance. PageRank is an importance score. A search engine also needs a relevance score for the query.</p>
+          <p class="cn-below"><span class="cn-prefix">中文：</span>课件区分了 relevance 和 importance。PageRank 是 importance score，也就是网页权威性分数；搜索引擎还需要 relevance score，判断网页内容和用户查询是否相关。</p>
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>Score type<span class="cn-table">中文：分数类型</span></th>
+                <th>Meaning<span class="cn-table">中文：含义</span></th>
+                <th>Examples<span class="cn-table">中文：例子</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Relevance<span class="cn-table">中文：相关性</span></td>
+                <td>How well document content matches the user's query.<span class="cn-table">中文：文档内容和用户查询匹配得有多好。</span></td>
+                <td>Boolean matching, TF-IDF, vector-space similarity, embeddings, phrase/proximity search.<span class="cn-table">中文：布尔匹配、TF-IDF、向量空间相似度、embedding、短语/邻近搜索。</span></td>
+              </tr>
+              <tr>
+                <td>Importance<span class="cn-table">中文：重要性/权威性</span></td>
+                <td>How authoritative or trustworthy the document is, independent of the query.<span class="cn-table">中文：文档本身有多权威、多可信，与具体查询无关。</span></td>
+                <td>PageRank, user feedback, click-through rate, dwell time, domain authority, content quality.<span class="cn-table">中文：PageRank、用户反馈、点击率、停留时间、域名权威性、内容质量。</span></td>
+              </tr>
+              <tr>
+                <td>Final rank<span class="cn-table">中文：最终排名</span></td>
+                <td>The search engine combines relevance, importance, and many other features.<span class="cn-table">中文：搜索引擎会综合相关性、重要性和其他很多特征。</span></td>
+                <td>Modern systems often use machine-learned ranking models.<span class="cn-table">中文：现代搜索系统通常使用机器学习排序模型。</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="wide-slide">
+            <figure>
+              <img src="link_analysis_assets/8a-slide-32.png" alt="Slide explaining final ranking from relevance and importance scores.">
+              <figcaption>PageRank alone is not the final search score; it is one authority feature.</figcaption>
+              <figcaption class="caption-cn"><span class="cn-prefix">中文：</span>PageRank 不是最终搜索分数，它只是表示权威性的一个特征。</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section id="example">
+          <h2>Worked Example / 例题演示</h2>
+          <p class="lead">The 8B slides use a four-page graph where B, C, and D all link to A. A has no outgoing links, so A is a sink.</p>
+          <p class="cn-below"><span class="cn-prefix">中文：</span>8B 课件里的例子有 4 个页面：B、C、D 都指向 A，而 A 没有出链，所以 A 是一个 sink。</p>
+          <svg class="diagram" viewBox="0 0 1040 300" role="img" aria-labelledby="example-title example-desc">
+            <title id="example-title">Four-node PageRank example</title>
+            <desc id="example-desc">Nodes B, C, and D point to A. A is a sink with no outgoing links.</desc>
+            <defs>
+              <marker id="arrow2" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+                <path d="M2,2 L10,6 L2,10 Z" fill="#475569"></path>
+              </marker>
+            </defs>
+            <rect x="0" y="0" width="1040" height="300" fill="#fff"></rect>
+            <circle cx="510" cy="150" r="58" fill="#fce7f3" stroke="#9f1239" stroke-width="3"></circle>
+            <text x="492" y="161" font-size="34" font-weight="850" fill="#831843">A</text>
+            <circle cx="240" cy="82" r="48" fill="#dbeafe" stroke="#2563eb" stroke-width="3"></circle>
+            <text x="224" y="92" font-size="29" font-weight="850" fill="#1e3a8a">B</text>
+            <circle cx="240" cy="218" r="48" fill="#dcfce7" stroke="#2f6f4e" stroke-width="3"></circle>
+            <text x="224" y="229" font-size="29" font-weight="850" fill="#14532d">C</text>
+            <circle cx="780" cy="150" r="48" fill="#fef3c7" stroke="#a16207" stroke-width="3"></circle>
+            <text x="763" y="161" font-size="29" font-weight="850" fill="#713f12">D</text>
+            <line x1="287" y1="94" x2="454" y2="137" stroke="#475569" stroke-width="4" marker-end="url(#arrow2)"></line>
+            <line x1="288" y1="207" x2="454" y2="164" stroke="#475569" stroke-width="4" marker-end="url(#arrow2)"></line>
+            <line x1="732" y1="150" x2="568" y2="150" stroke="#475569" stroke-width="4" marker-end="url(#arrow2)"></line>
+            <text x="430" y="238" font-size="18" fill="#64748b">A has no outgoing links, so handle it as a dangling node.</text>
+          </svg>
+          <p class="cn-below"><span class="cn-prefix">中文：</span>图里所有箭头都指向 A，但 A 不指向任何页面。计算时不能让 A 的分数停在那里，必须把 A 的 dangling rank 平均分给所有页面。</p>
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>Version<span class="cn-table">中文：版本</span></th>
+                <th>A after one iteration<span class="cn-table">中文：A 第一轮后</span></th>
+                <th>B, C, D after one iteration<span class="cn-table">中文：B/C/D 第一轮后</span></th>
+                <th>What to notice<span class="cn-table">中文：要注意什么</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Simplified, no teleport<span class="cn-table">中文：简化版，无随机跳转</span></td>
+                <td>0.75</td>
+                <td>0</td>
+                <td>B, C, and D give all rank to A. They receive no incoming rank.<span class="cn-table">中文：B、C、D 都把分数给 A，它们自己没有入链，所以变成 0。</span></td>
+              </tr>
+              <tr>
+                <td>Modified, no sink handling<span class="cn-table">中文：改进版，但未处理 sink</span></td>
+                <td>0.675</td>
+                <td>0.0375 each</td>
+                <td>Every page gets teleportation rank, but A's sink rank still disappears.<span class="cn-table">中文：每个页面有随机跳转基础分，但 A 的 sink 分数仍然没有正确流出。</span></td>
+              </tr>
+              <tr>
+                <td>Modified with sink handling<span class="cn-table">中文：改进版并处理 sink</span></td>
+                <td>0.728125</td>
+                <td>0.090625 each</td>
+                <td>A's dangling rank is redistributed evenly, so total rank stays 1.<span class="cn-table">中文：A 的 dangling rank 被平均分配，总分仍保持为 1。</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="slide-grid">
+            <figure>
+              <img src="link_analysis_assets/8b-slide-14.png" alt="Slide showing four-node modified PageRank example without sink handling.">
+              <figcaption>Teleportation alone gives every page a base score but does not fully handle the sink.</figcaption>
+              <figcaption class="caption-cn"><span class="cn-prefix">中文：</span>只有 teleportation 会给每个页面基础分，但还没有完全处理 sink 问题。</figcaption>
+            </figure>
+            <figure>
+              <img src="link_analysis_assets/8b-slide-18.png" alt="Slide showing four-node PageRank example with sink handling.">
+              <figcaption>Dangling-aware PageRank preserves total probability mass.</figcaption>
+              <figcaption class="caption-cn"><span class="cn-prefix">中文：</span>处理 dangling node 后，总 PageRank 概率质量可以保持不丢失。</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section id="slides">
+          <h2>Original Slide Visuals / 原始课件图</h2>
+          <p class="lead">These are the most useful source slides to review right before an exam.</p>
+          <p class="cn-below"><span class="cn-prefix">中文：</span>这些是考前最值得回看的原始课件截图，建议先看上面的中文解释，再用这些 slide 对照记忆。</p>
+          <div class="slide-grid">
+            <figure>
+              <img src="link_analysis_assets/8a-slide-08.png" alt="Slide defining link analysis.">
+              <figcaption>Definition of link analysis.</figcaption>
+              <figcaption class="caption-cn"><span class="cn-prefix">中文：</span>Link Analysis 的定义。</figcaption>
+            </figure>
+            <figure>
+              <img src="link_analysis_assets/8a-slide-17.png" alt="Slide explaining ranking manipulation and why source importance matters.">
+              <figcaption>Why PageRank is better than raw in-degree.</figcaption>
+              <figcaption class="caption-cn"><span class="cn-prefix">中文：</span>为什么 PageRank 比只数入链数量更好。</figcaption>
+            </figure>
+            <figure>
+              <img src="link_analysis_assets/8a-slide-22.png" alt="Slide explaining random walk model behind PageRank.">
+              <figcaption>Random surfer / Markov chain model.</figcaption>
+              <figcaption class="caption-cn"><span class="cn-prefix">中文：</span>随机浏览者模型，也就是 Markov chain 的直觉。</figcaption>
+            </figure>
+            <figure>
+              <img src="link_analysis_assets/8a-slide-27.png" alt="Slide showing PageRank iterations and convergence.">
+              <figcaption>Iterative updates until convergence.</figcaption>
+              <figcaption class="caption-cn"><span class="cn-prefix">中文：</span>不断迭代更新，直到 PageRank 收敛。</figcaption>
+            </figure>
+            <figure>
+              <img src="link_analysis_assets/8b-slide-08.png" alt="Slide saying simplified PageRank can get trapped in disconnected components.">
+              <figcaption>Why simplified PageRank needs a fix.</figcaption>
+              <figcaption class="caption-cn"><span class="cn-prefix">中文：</span>为什么简化版 PageRank 需要加入修正。</figcaption>
+            </figure>
+            <figure>
+              <img src="link_analysis_assets/8b-slide-19.png" alt="Slide showing final PageRank update formula.">
+              <figcaption>Final formula to memorize.</figcaption>
+              <figcaption class="caption-cn"><span class="cn-prefix">中文：</span>需要记住的最终 PageRank 更新公式。</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section id="practice">
+          <h2>Practice Q&amp;A / 练习问答</h2>
+          <details open>
+            <summary>1. What is link analysis? / 什么是链接分析？</summary>
+            <div>
+              <p>Link analysis is a graph-based data-analysis technique that studies relationships between nodes. In web search, pages are nodes and hyperlinks are directed edges. The goal is to identify important pages, communities, or hidden relationships from the structure of the graph.</p>
+              <p class="cn-below"><span class="cn-prefix">中文：</span>Link analysis 是基于图的数据分析方法，研究节点之间的关系。在搜索里，网页是节点，超链接是有向边。目标是从图结构里找重要网页、群体或隐藏关系。</p>
+            </div>
+          </details>
+          <details>
+            <summary>2. Why is in-degree alone not enough for ranking? / 为什么只看入度不够？</summary>
+            <div>
+              <p>In-degree only counts how many pages link to a page. It ignores whether those pages are important and can be manipulated by creating many low-quality pages that all link to the target. PageRank improves this by weighting links from important pages more heavily.</p>
+              <p class="cn-below"><span class="cn-prefix">中文：</span>In-degree 只看有多少页面链接到你，不看这些页面重不重要，而且容易通过制造很多低质量页面来刷分。PageRank 会让重要页面的链接权重更高。</p>
+            </div>
+          </details>
+          <details>
+            <summary>3. What does PageRank measure? / PageRank 衡量什么？</summary>
+            <div>
+              <p>PageRank measures the importance or authority of a page based on the link graph. It is query-independent, meaning it does not depend on the user's specific search terms.</p>
+              <p class="cn-below"><span class="cn-prefix">中文：</span>PageRank 衡量网页在链接图中的重要性或权威性。它不依赖具体查询，也就是说用户搜什么不会改变这个基础权威分。</p>
+            </div>
+          </details>
+          <details>
+            <summary>4. Explain the simplified PageRank formula in words. / 用文字解释简化版公式。</summary>
+            <div>
+              <p>A page's new rank is the sum of rank contributions from every page linking to it. Each incoming page divides its previous rank equally across all pages it links to.</p>
+              <p class="cn-below"><span class="cn-prefix">中文：</span>一个页面的新分数等于所有指向它的页面贡献之和。每个入链页面会把自己上一轮的分数平均分给它所有出链。</p>
+            </div>
+          </details>
+          <details>
+            <summary>5. What problem does modified PageRank solve? / 改进版 PageRank 解决什么问题？</summary>
+            <div>
+              <p>It solves the problem that a random surfer may get trapped in disconnected components, cycles, or sinks. By adding teleportation, every page has a chance to receive rank even without incoming links.</p>
+              <p class="cn-below"><span class="cn-prefix">中文：</span>它解决随机浏览者被困在不连通部分、循环或 sink 里的问题。加入 teleportation 后，就算页面没有入链，也有机会获得分数。</p>
+            </div>
+          </details>
+          <details>
+            <summary>6. What is damping factor? / 什么是阻尼因子？</summary>
+            <div>
+              <p>The damping factor d is the probability that the random surfer follows a link from the current page. The probability 1 - d is the chance of teleporting to a random page. A typical value is d = 0.85.</p>
+              <p class="cn-below"><span class="cn-prefix">中文：</span>Damping factor d 表示随机浏览者继续点击当前页面链接的概率。1 - d 表示随机跳到任意页面的概率。常用 d = 0.85。</p>
+            </div>
+          </details>
+          <details>
+            <summary>7. Why is damping factor important? / 为什么阻尼因子重要？</summary>
+            <div>
+              <p>It prevents rank from getting trapped, helps the algorithm converge to stable scores, models realistic user behavior, and balances link-graph authority with random exploration.</p>
+              <p class="cn-below"><span class="cn-prefix">中文：</span>它可以防止分数卡住，帮助算法收敛，模拟真实用户不会一直点链接的行为，并平衡链接权威性和随机探索。</p>
+            </div>
+          </details>
+          <details>
+            <summary>8. What is a sink or dangling node? / 什么是 sink/dangling node？</summary>
+            <div>
+              <p>A sink is a page with no outgoing links. It can absorb PageRank because rank enters the page but cannot leave through links. PageRank handles this by redistributing sink rank uniformly to all pages.</p>
+              <p class="cn-below"><span class="cn-prefix">中文：</span>Sink/dangling node 是没有出链的页面。分数可以流进它，但不能通过链接流出，所以需要把它的分数平均分给所有页面。</p>
+            </div>
+          </details>
+          <details>
+            <summary>9. What is the difference between relevance score and importance score? / 相关性分数和重要性分数有什么区别？</summary>
+            <div>
+              <p>Relevance measures how well a document matches a query. Importance measures how authoritative the document is independent of the query. PageRank is an importance score, not a relevance score.</p>
+              <p class="cn-below"><span class="cn-prefix">中文：</span>Relevance 看文档和查询是否匹配；Importance 看文档本身是否权威、可信。PageRank 是 importance score，不是 relevance score。</p>
+            </div>
+          </details>
+          <details>
+            <summary>10. Give a short exam answer for PageRank. / 写一个简短考试答案。</summary>
+            <div>
+              <p>PageRank is a link-analysis algorithm that ranks pages by interpreting links as endorsements. A page is important if many important pages link to it. Each linking page distributes its rank across its outgoing links, and the modified version adds teleportation using damping factor d to ensure stable rankings.</p>
+              <p class="cn-below"><span class="cn-prefix">中文：</span>PageRank 是一种链接分析算法，把链接看作推荐/投票。如果很多重要页面链接到某页面，该页面就重要。每个页面会把自己的分数分给出链；改进版用 damping factor d 加入随机跳转，让排名更稳定。</p>
+            </div>
+          </details>
+        </section>
+
+        <section id="cheat-sheet">
+          <h2>Cheat Sheet / 速记表</h2>
+          <div class="cheat">
+            <p><span class="formula-key">Link analysis:</span> use graph connections to measure relationships and importance.<span class="cn-line"><span class="cn-prefix">中文：</span>用图中的连接关系来衡量关系和重要性。</span></p>
+            <p><span class="formula-key">Web graph:</span> pages are nodes, hyperlinks are directed edges.<span class="cn-line"><span class="cn-prefix">中文：</span>网页是节点，超链接是有方向的边。</span></p>
+            <p><span class="formula-key">Link as vote:</span> p &rarr; q means p endorses q.<span class="cn-line"><span class="cn-prefix">中文：</span>p 指向 q，表示 p 给 q 投票/推荐。</span></p>
+            <p><span class="formula-key">Raw in-degree problem:</span> ignores link quality and is easy to manipulate.<span class="cn-line"><span class="cn-prefix">中文：</span>只数入链会忽略链接质量，也容易被刷链接操纵。</span></p>
+            <p><span class="formula-key">Simplified PR:</span> PR(u) = sum of PR(v) / Out(v) over incoming pages v.<span class="cn-line"><span class="cn-prefix">中文：</span>简化 PR：页面 u 的分数等于所有入链页面贡献之和。</span></p>
+            <p><span class="formula-key">Modified PR:</span> add (1 - d) / N teleportation plus d times link contributions.<span class="cn-line"><span class="cn-prefix">中文：</span>改进 PR：加入随机跳转基础分，再加上乘以 d 的链接贡献。</span></p>
+            <p><span class="formula-key">Damping factor:</span> d = probability of following a link; 1 - d = probability of teleporting.<span class="cn-line"><span class="cn-prefix">中文：</span>d 是继续点链接的概率，1 - d 是随机跳转概率。</span></p>
+            <p><span class="formula-key">Common d:</span> 0.85, so teleportation probability is 0.15.<span class="cn-line"><span class="cn-prefix">中文：</span>常用 d = 0.85，所以随机跳转概率是 0.15。</span></p>
+            <p><span class="formula-key">Sink:</span> page with no outgoing links; redistribute its rank uniformly.<span class="cn-line"><span class="cn-prefix">中文：</span>Sink 是没有出链的页面，需要把它的分数平均分配出去。</span></p>
+            <p><span class="formula-key">Search ranking:</span> final results combine relevance score and importance score.<span class="cn-line"><span class="cn-prefix">中文：</span>最终搜索排名会结合相关性分数和重要性分数。</span></p>
+          </div>
+          <h3>Common Mistakes / 常见错误</h3>
+          <div class="warning">
+            <p><strong>Do not say PageRank only counts links.</strong> It counts number and quality of links.</p>
+            <p class="cn-below"><span class="cn-prefix">中文：</span>不要说 PageRank 只是数链接。它同时看链接数量和链接质量。</p>
+            <p><strong>Do not confuse relevance with authority.</strong> PageRank is query-independent authority, not query matching.</p>
+            <p class="cn-below"><span class="cn-prefix">中文：</span>不要把相关性和权威性混淆。PageRank 是不依赖查询的权威性，不是查询匹配。</p>
+            <p><strong>Do not forget division by outgoing links.</strong> A high-rank page with many outgoing links gives each target a smaller share.</p>
+            <p class="cn-below"><span class="cn-prefix">中文：</span>不要忘记除以出链数量。一个高分网页如果出链很多，每个目标拿到的份额会变小。</p>
+            <p><strong>Do not forget teleportation.</strong> The modified formula always includes (1 - d) / N.</p>
+            <p class="cn-below"><span class="cn-prefix">中文：</span>不要忘记随机跳转。改进版公式总是包含 (1 - d) / N。</p>
+            <p><strong>Do not ignore dangling nodes.</strong> Sinks must redistribute their rank or be treated as linking to all pages.</p>
+            <p class="cn-below"><span class="cn-prefix">中文：</span>不要忽略 dangling nodes。Sink 的分数必须平均分配，或者把 sink 当作连向所有页面。</p>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
